@@ -45,23 +45,23 @@ Escena::Escena()
    modoDibujo = false;
    cubo = new Cubo(50);
    cubo->setMaterial(oro);
-
+   catapulta = new Catapulta();
    tetraedro = new Tetraedro(100);
    tetraedro->setMaterial(oro);
    esfera = new Esfera(20, 20, 10);
    esfera->setMaterial(cobre);
 
-   cono = new Cono(10, 50, 10, 5,EJEZ);
+   cono = new Cono(10, 50, 10, 5, EJEZ);
    cono->setMaterial(oro);
-   cilindro = new Cilindro(5.0, 10.0, 10.0, 5,EJEZ);
+   cilindro = new Cilindro(5.0, 10.0, 10.0, 5, EJEZ);
    cilindro->setMaterial(oro);
    objply = new ObjPLY("plys/ant.ply");
    objply->setMaterial(oro);
-   objrevolucion = new ObjRevolucion("plys/peon.ply", 6, 1, 1,EJEY);
+   objrevolucion = new ObjRevolucion("plys/peon.ply", 6, 1, 1, EJEY);
    objrevolucion->setMaterial(blanco);
-   objrevolucion2 = new ObjRevolucion("plys/peonx.ply", 6, 1, 1,EJEZ);
+   objrevolucion2 = new ObjRevolucion("plys/peonx.ply", 6, 1, 1, EJEZ);
    objrevolucion2->setMaterial(negro);
-   objrevolucion3 = new ObjRevolucion("plys/peonz.ply", 6, 1, 1,EJEZ);
+   objrevolucion3 = new ObjRevolucion("plys/peonz.ply", 6, 1, 1, EJEZ);
    objrevolucion3->setMaterial(negro);
    // .....
 
@@ -207,7 +207,7 @@ void Escena::dibujar()
       glPushMatrix();
       glTranslatef(150, 0, 0);
       glScalef(30, 30, 30);
-      objrevolucion->pintarConTapas(modoDibujo, ajedrez, alambre, solido, puntos, luz,aux);
+      objrevolucion->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
       glPopMatrix();
 
       glPushMatrix();
@@ -219,7 +219,6 @@ void Escena::dibujar()
    }
    if (objply != nullptr && bHormiga)
    {
-      aux=false;
       glPushMatrix();
       glTranslatef(125, 0, -130);
       glScalef(4, 4, 4);
@@ -229,7 +228,7 @@ void Escena::dibujar()
    }
    if (cubo != nullptr && bCubo)
    {
-      aux=true;
+      catapulta->rotacionCuchara(20);
       glPushMatrix();
       glTranslatef(-40, 0, -50);
       cubo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
@@ -238,13 +237,17 @@ void Escena::dibujar()
    if (tetraedro != nullptr && bTetraedro)
    {
       glPushMatrix();
-      glTranslatef(0, 0, -200);
-
-      tetraedro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      catapulta->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      // glTranslatef(0, 0, -200);
+      // tetraedro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
       glPopMatrix();
    }
    if (esfera != nullptr && bEsfera)
    {
+      catapulta->rotacionCuchara(-20);
+      catapulta->alturaCatapulta(2);
+      catapulta->rotacionCatapulta(30);
+
       glPushMatrix();
       glTranslatef(40, 0, -50);
 

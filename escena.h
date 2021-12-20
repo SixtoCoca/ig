@@ -11,6 +11,7 @@
 #include "objply.h"
 #include "objrevolucion.h"
 #include "material.h"
+#include "catapulta.h"
 #include "luz.h"
 #include "luzposicional.h"
 #include "luzdireccional.h"
@@ -90,6 +91,7 @@ private:
     ObjRevolucion *objrevolucion = nullptr; // es importante inicializarlo a 'nullptr'
     ObjRevolucion *objrevolucion2 = nullptr; // es importante inicializarlo a 'nullptr'
     ObjRevolucion *objrevolucion3 = nullptr; // es importante inicializarlo a 'nullptr'
+    Catapulta *catapulta = nullptr; // es importante inicializarlo a 'nullptr'
 
     //Luces
     LuzPosicional *luzPosicional = nullptr;
