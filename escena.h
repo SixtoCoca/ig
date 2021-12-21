@@ -22,7 +22,10 @@ typedef enum
     NADA,
     SELOBJETO,
     SELVISUALIZACION,
-    SELDIBUJADO
+    SELDIBUJADO,
+    LUCES,
+    GRADOLIBERTAD,
+    ANIMACION
 } menu;
 typedef enum
 {
@@ -75,26 +78,28 @@ private:
     visualizacion visualizacionMenu = SOLIDO;
     bool modoDibujo;                            // Inmediato o diferido
     bool ajedrez, solido, puntos, alambre, luz; //modo de visualización
-    bool bCubo = false, bTetraedro = false, bPeon = false, bHormiga = false, bEsfera = false, bCono = false, bCilindro = false;
-    bool aux=true;
-    float rotacionLuz=0.0f;
+    bool tapas = true;
+    bool bAnimacion = false, bLuzSituacional = false;
+    bool bLuzDireccional = true, bLuzPosicional = true;
+    bool bCubo = true, bSuelo = true, bTetraedro = true, bPeonTapa = true, bPeon = true, bHormiga = true, bEsfera = true, bCono = true, bCilindro = true, bCatapulta = true;
+    float luzAnimada = 0.0f;
     ; //modo de visualización
     // Objetos de la escena
     Ejes ejes;
 
     //objetos
-    Cubo *cubo = nullptr;                   // es importante inicializarlo a 'nullptr'
-    Tetraedro *tetraedro = nullptr;         // es importante inicializarlo a 'nullptr'
-    Esfera *esfera = nullptr;               // es importante inicializarlo a 'nullptr'
-    Cono *cono = nullptr;                   // es importante inicializarlo a 'nullptr'
-    Cilindro *cilindro = nullptr;           // es importante inicializarlo a 'nullptr'
-    Malla3D *malla = nullptr;               // es importante inicializarlo a 'nullptr'
-    ObjPLY *objply = nullptr;               // es importante inicializarlo a 'nullptr'
-    ObjRevolucion *objrevolucion = nullptr; // es importante inicializarlo a 'nullptr'
+    Cubo *cubo = nullptr;                    // es importante inicializarlo a 'nullptr'
+    Tetraedro *tetraedro = nullptr;          // es importante inicializarlo a 'nullptr'
+    Esfera *esfera = nullptr;                // es importante inicializarlo a 'nullptr'
+    Cono *cono = nullptr;                    // es importante inicializarlo a 'nullptr'
+    Cilindro *cilindro = nullptr;            // es importante inicializarlo a 'nullptr'
+    Malla3D *malla = nullptr;                // es importante inicializarlo a 'nullptr'
+    ObjPLY *objply = nullptr;                // es importante inicializarlo a 'nullptr'
+    ObjRevolucion *objrevolucion = nullptr;  // es importante inicializarlo a 'nullptr'
     ObjRevolucion *objrevolucion2 = nullptr; // es importante inicializarlo a 'nullptr'
     ObjRevolucion *objrevolucion3 = nullptr; // es importante inicializarlo a 'nullptr'
-    Catapulta *catapulta = nullptr; // es importante inicializarlo a 'nullptr'
-    Cuadro *suelo = nullptr; // es importante inicializarlo a 'nullptr'
+    Catapulta *catapulta = nullptr;          // es importante inicializarlo a 'nullptr'
+    Cuadro *suelo = nullptr;                 // es importante inicializarlo a 'nullptr'
 
     //Luces
     LuzPosicional *luzPosicional = nullptr;
@@ -109,7 +114,9 @@ public:
     Escena();
     void inicializar(int UI_window_width, int UI_window_height);
     void redimensionar(int newWidth, int newHeight);
-
+    void menuInicial();
+    void pintarObjetos();
+    void animacion();
     // Dibujar
     void dibujar();
 

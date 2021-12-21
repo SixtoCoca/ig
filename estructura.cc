@@ -1,5 +1,5 @@
 #include "estructura.h"
-
+#include "material.h"
 // *****************************************************************************
 //
 // Clase estructura
@@ -12,6 +12,19 @@ Estructura::Estructura()
    base2 = new Cilindro(6, 100, 50, 5, EJEX);
    poste = new Cilindro(6, 100, 50, 5, EJEY);
    posteDiagonal = new Cilindro(6, 100, 75, 5, EJEY);
+   //temporal
+   //Jade
+
+   Tupla4f mat_ambient = {0.1745f, 0.01175f, 0.01175f, 0.55f};
+   Tupla4f mat_diffuse = {0.61424f, 0.04136f, 0.04136f, 0.55f};
+   Tupla4f mat_specular = {0.727811f, 0.626959f, 0.626959f, 0.55f};
+   float shine = 76.8f;
+
+   Material *ruby = new Material(mat_ambient, mat_diffuse, mat_specular, shine);
+   base1->setMaterial(ruby);
+   base2->setMaterial(ruby);
+   poste->setMaterial(ruby);
+   posteDiagonal->setMaterial(ruby);
 }
 
 void Estructura::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz)

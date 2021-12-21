@@ -26,8 +26,9 @@
 class Catapulta
 {
 private:
-   float alturaBase;
+   float alturaBase, maximaAltura;
    float rotacion;
+   float velocidad,velocidadAltura;
    Cubo *base = nullptr;
    Cilindro *elevador = nullptr, *baseRotatoria = nullptr;
 
@@ -41,6 +42,11 @@ public:
    void rotacionCuchara(float angulo);
    void rotacionCatapulta(float angulo);
    void alturaCatapulta(float altura);
+   void animar();
+   void modificarVelocidadAnimacionRotacion(float incremento);
+   void modificarVelocidadAnimacionAltura(float incremento);
+   void modificarVelocidadAnimacionCuchara(float incremento);
+   void modificarVelocidad(float incremento);
 };
 
 #endif

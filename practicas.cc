@@ -69,6 +69,11 @@ void normal_keys( unsigned char tecla, int x, int y )
    else
 		glutPostRedisplay();
 }
+void idle(){
+   if(escena != nullptr)
+      escena->animacion();
+   glutPostRedisplay();
+}
 
 //***************************************************************************
 // Funcion llamada cuando se produce aprieta una tecla especial
@@ -137,6 +142,7 @@ int main( int argc, char **argv )
    // asignación de la funcion llamada "tecla_Especial" al evento correspondiente
    glutSpecialFunc( special_keys );
 
+   glutIdleFunc(idle);
    // inicialización de librería GLEW (solo en Linux)
    #ifdef LINUX
    const GLenum codigoError = glewInit();
@@ -151,7 +157,6 @@ int main( int argc, char **argv )
 
    // funcion de inicialización de la escena (necesita que esté la ventana creada)
    escena->inicializar( UI_window_width, UI_window_height );
-
 
 
    // ejecutar del bucle de eventos

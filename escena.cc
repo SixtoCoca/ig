@@ -24,16 +24,19 @@ Escena::Escena()
    Tupla4f mat_specular = {0.628281f, 0.555802f, 0.366065f, 1.0f};
    float shine = 51.2f;
    oro = new Material(mat_ambient, mat_diffuse, mat_specular, shine);
+
    mat_ambient = {0.19125f, 0.0735f, 0.0225f, 1.0f};
    mat_diffuse = {0.7038f, 0.27048f, 0.0828f, 1.0f};
    mat_specular = {0.256777f, 0.137622f, 0.086014f, 1.0f};
    shine = 12.8f;
    cobre = new Material(mat_ambient, mat_diffuse, mat_specular, shine);
+
    mat_ambient = {0.0f, 0.0f, 0.0f, 1.0f};
    mat_diffuse = {0.0f, 0.0f, 0.0f, 1.0f};
    mat_specular = {1.0f, 1.0f, 1.0f, 1.0f};
    shine = 50.0f;
    negro = new Material(mat_ambient, mat_diffuse, mat_specular, shine);
+
    mat_ambient = {0.01f, 0.01f, 0.01f, 1.0f};
    mat_diffuse = {1.0f, 1.0f, 1.0f, 1.0f};
    mat_specular = {0.0, 0.0f, 0.0f, 1.0f};
@@ -45,28 +48,34 @@ Escena::Escena()
    modoDibujo = false;
    cubo = new Cubo(50);
    cubo->setMaterial(oro);
-   cubo->setTextura("texturas/cesped.jpg");
+   cubo->setTextura("texturas/madera.jpg");
    catapulta = new Catapulta();
+
    tetraedro = new Tetraedro(100);
    tetraedro->setMaterial(oro);
-   tetraedro->setTextura("texturas/cesped.jpg");
+
    esfera = new Esfera(20, 20, 10);
    esfera->setMaterial(cobre);
+
    suelo = new Cuadro(1);
    suelo->setTextura("texturas/cesped.jpg");
+   suelo->setMaterial(blanco);
 
-   cono = new Cono(10, 50, 10, 5, EJEZ);
+   cono = new Cono(10, 50, 10, 5, EJEY);
    cono->setMaterial(oro);
-   cilindro = new Cilindro(5.0, 10.0, 10.0, 5, EJEZ);
+
+   cilindro = new Cilindro(5.0, 10.0, 10.0, 5, EJEY);
    cilindro->setMaterial(oro);
+
    objply = new ObjPLY("plys/ant.ply");
    objply->setMaterial(oro);
+
    objrevolucion = new ObjRevolucion("plys/peon.ply", 6, 1, 1, EJEY);
    objrevolucion->setMaterial(blanco);
+
    objrevolucion2 = new ObjRevolucion("plys/peonx.ply", 6, 1, 1, EJEZ);
-   objrevolucion2->setMaterial(negro);
-   objrevolucion3 = new ObjRevolucion("plys/peonz.ply", 6, 1, 1, EJEZ);
-   objrevolucion3->setMaterial(negro);
+   objrevolucion2->setMaterial(cobre);
+
    // .....
 
    //luces
@@ -93,8 +102,91 @@ void Escena::inicializar(int UI_window_width, int UI_window_height)
 
    change_projection(float(UI_window_width) / float(UI_window_height));
    glViewport(0, 0, UI_window_width, UI_window_height);
+   menuInicial();
 }
 
+//**************************************************************************
+//
+// Iniciar los objetos de la escena inicial
+//
+//**************************************************************************
+void Escena::pintarObjetos()
+{
+   if (suelo != nullptr && bSuelo)
+   {
+      glPushMatrix();
+      glTranslatef(-1000, 0, 1000);
+      glRotatef(-90, 1, 0, 0);
+      glScalef(2000, 2000, 2000);
+      suelo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      glPopMatrix();
+   }
+   if (cubo != nullptr && bCubo)
+   {
+      glPushMatrix();
+      glTranslatef(-100, 25, 0);
+      cubo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+
+      glPopMatrix();
+   }
+   if (objrevolucion != nullptr && bPeon)
+   {
+      glPushMatrix();
+      glTranslatef(150, 40, 0);
+      glScalef(30, 30, 30);
+      objrevolucion->pintarConTapas(modoDibujo, ajedrez, alambre, solido, puntos, luz, tapas);
+      glPopMatrix();
+   }
+   if (objply != nullptr && bHormiga)
+   {
+      glPushMatrix();
+      glTranslatef(125, 40, -130);
+      glScalef(4, 4, 4);
+      objply->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      objply->setMaterial(cobre);
+      glPopMatrix();
+   }
+   if (tetraedro != nullptr && bTetraedro)
+   {
+      glPushMatrix();
+      glTranslatef(0, 40, -200);
+      tetraedro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      glPopMatrix();
+   }
+   if (esfera != nullptr && bEsfera)
+   {
+
+      glPushMatrix();
+      glTranslatef(50, 40, -70);
+
+      glScalef(3, 3, 3);
+      esfera->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      glPopMatrix();
+   }
+   if (cono != nullptr && bCono)
+   {
+      glPushMatrix();
+      glTranslatef(180, 0, -60);
+      glScalef(5, 5, 5);
+      cono->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      glPopMatrix();
+   }
+   if (cilindro != nullptr && bCilindro)
+   {
+      glPushMatrix();
+      glTranslatef(-80, 0, -110);
+      glScalef(5, 5, 5);
+      cilindro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      glPopMatrix();
+   }
+   if (catapulta != nullptr && bCatapulta)
+   {
+      glPushMatrix();
+      catapulta->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      glPopMatrix();
+   }
+}
+//**************************************************************************
 // **************************************************************************
 //
 // función de dibujo de la escena: limpia ventana, fija cámara, dibuja ejes,
@@ -161,11 +253,12 @@ void Escena::dibujar()
    if (luz)
    {
       glEnable(GL_LIGHTING);
-      std::cout << "la rotacion es " << rotacionLuz<<std::endl; 
       glPushMatrix();
-      luzDireccional->activar();
-      glRotatef(rotacionLuz,0.0f,1.0f,0.0f);
-      luzPosicional->activar();
+      if (bLuzDireccional)
+         luzDireccional->activar();
+      glRotatef(luzAnimada, 0.0f, 1.0f, 1.0f);
+      if (bLuzPosicional)
+         luzPosicional->activar();
       glPopMatrix();
    }
    else
@@ -174,118 +267,45 @@ void Escena::dibujar()
       luzPosicional->desactivar();
       luzDireccional->desactivar();
    }
-   switch (objetoMenu)
-   {
-   case HORMIGA:
-      bHormiga = true;
-      break;
-   case TETRAEDRO:
-      bTetraedro = true;
-      break;
-   case CUBO:
-      bCubo = true;
-      break;
-   case ESFERA:
-      bEsfera = true;
-      break;
-   case PEON:
-      bPeon = true;
-      break;
-   case CONO:
-      bCono = true;
-      break;
-   case CILINDRO:
-      bCilindro = true;
-      break;
-   case NINGUNO:
-      bHormiga = false;
-      bTetraedro = false;
-      bCubo = false;
-      bPeon = false;
-      bEsfera = false;
-      bCono = false;
-      bCilindro = false;
 
-      break;
-   }
+   pintarObjetos();
+}
 
-   if (objrevolucion != nullptr && objrevolucion2 != nullptr && bPeon)
-   {
-      // luzDireccional->variarAnguloAlfa(40*M_PI/180);
-      glPushMatrix();
-      glTranslatef(150, 0, 0);
-      glScalef(30, 30, 30);
-      objrevolucion->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
-      glPopMatrix();
+//**************************************************************************
+//
+// Muestra el menu inical
+//
+//**************************************************************************
 
-      glPushMatrix();
-      glTranslatef(-150, 0, 0);
-      glScalef(30, 30, 30);
-      objrevolucion2->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
-
-      glPopMatrix();
-   }
-   if (objply != nullptr && bHormiga)
+void Escena::animacion()
+{
+   if (bLuzSituacional)
    {
-      glPushMatrix();
-      glTranslatef(125, 0, -130);
-      glScalef(4, 4, 4);
-      objply->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
-      objply->setMaterial(cobre);
-      glPopMatrix();
+      luzAnimada = luzAnimada + 1;
+      luzAnimada = fmod(luzAnimada, 360);
    }
-   if (cubo != nullptr && bCubo)
+   if (bAnimacion)
    {
-
-      // catapulta->rotacionCuchara(-40);
-      glPushMatrix();
-      // glTranslatef(-40, 0, -50);
-      cubo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
-      glTranslatef(-1000, 0, 1000);
-      glRotatef(-90, 1, 0, 0);
-      glScalef(2000, 2000, 2000);
-      //suelo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
-      glPopMatrix();
-   }
-   if (tetraedro != nullptr && bTetraedro)
-   {
-      rotacionLuz += 10.0f;
-      glPushMatrix();
-      catapulta->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
-      // glTranslatef(0, 0, -200);
-      //tetraedro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
-      glPopMatrix();
-   }
-   if (esfera != nullptr && bEsfera)
-   {
-      catapulta->rotacionCuchara(20);
-      catapulta->alturaCatapulta(2);
-      catapulta->rotacionCatapulta(30);
-
-      glPushMatrix();
-      glTranslatef(40, 0, -50);
-
-      glScalef(3, 3, 3);
-      esfera->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
-      glPopMatrix();
-   }
-   if (cono != nullptr && bCono)
-   {
-      glPushMatrix();
-      glTranslatef(180, 0, -60);
-      glScalef(5, 5, 5);
-      cono->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
-      glPopMatrix();
-   }
-   if (cilindro != nullptr && bCilindro)
-   {
-      glPushMatrix();
-      glTranslatef(-80, 0, -110);
-      glScalef(5, 5, 5);
-      cilindro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
-      glPopMatrix();
+      catapulta->animar();
    }
 }
+//**************************************************************************
+//
+// Muestra el menu inical
+//
+//**************************************************************************
+void Escena::menuInicial()
+{
+   using namespace std;
+   cout << endl;
+   cout << "Estos son los menus disponibles: " << endl;
+   cout << "\t - Pulsa O: Menu selección de objeto " << endl;
+   cout << "\t - Pulsa V: Menu de visualización " << endl;
+   cout << "\t - Pulsa D: Modo dibujado " << endl;
+   cout << "\t - Pulsa A: Animación automática" << endl;
+   cout << "\t - Pulsa M: Mover Manualmente los grados de libertad" << endl;
+}
+//**************************************************************************
 
 //**************************************************************************
 //
@@ -319,7 +339,8 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y)
          cout << "\t - Pulsa E: Para dibujar la esfera " << endl;
          cout << "\t - Pulsa O: Para dibujar la cono " << endl;
          cout << "\t - Pulsa I: Para dibujar la cilindro " << endl;
-         cout << "\t - Pulsa N: Para limpiarlo " << endl;
+         cout << "\t - Pulsa S: Para dibujar el suelo " << endl;
+         cout << "\t - Pulsa J: Para dibujar el modelo jerarquico(catapulta) " << endl;
          cout << "\t - Pulsa Q: Para salir del menu " << endl;
 
          break;
@@ -332,6 +353,7 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y)
          cout << "\t - Pulsa P: Para dibujar modo puntos " << endl;
          cout << "\t - Pulsa S: Para dibujar modo solido " << endl;
          cout << "\t - Pulsa I: Para activar modo iluminacion " << endl;
+         cout << "\t - Pulsa T: Para quitar las tapas " << endl;
          cout << "\t - Pulsa N: Para limpiar los modos " << endl;
          cout << "\t - Pulsa Q: Para salir del menu " << endl;
          break;
@@ -343,6 +365,33 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y)
          cout << "\t - Pulsa D: Para dibujar en modo diferido " << endl;
          cout << "\t - Pulsa Q: Para salir del menu " << endl;
          break;
+      case 'M':
+         modoMenu = GRADOLIBERTAD;
+         cout << "Estas en el menu para mover el grado de libertad: " << endl;
+         cout << "\t - Pulsa W: Para aumentar la altura de la catapulta" << endl;
+         cout << "\t - Pulsa E: Para disminuir la altura de la catapulta" << endl;
+         cout << "\t - Pulsa S: Para rotar la catapulta " << endl;
+         cout << "\t - Pulsa D: Para rotar(otro lado) la catapulta " << endl;
+         cout << "\t - Pulsa X: Para lanzar la cuchara " << endl;
+         cout << "\t - Pulsa C: Para recoger la cuchara " << endl;
+         cout << "\t - Pulsa Q: Para salir del menu " << endl;
+
+         break;
+      case 'A':
+         modoMenu = ANIMACION;
+         bAnimacion = true;
+         cout << "Estas en el menu de animación: " << endl;
+         cout << "\t - Pulsa W: Para aumentar la velocidad de altura de la catapulta" << endl;
+         cout << "\t - Pulsa E: Para disminuir la velocidad de altura de la catapulta" << endl;
+         cout << "\t - Pulsa S: Para aumentar la velocidad de rotar la catapulta " << endl;
+         cout << "\t - Pulsa D: Para disminuir la velocidad de rotar la catapulta " << endl;
+         cout << "\t - Pulsa X: Para aumentar la velocidad de lanzar la cuchara " << endl;
+         cout << "\t - Pulsa C: Para disminuir la velocidad de recoger la cuchara " << endl;
+         cout << "\t - Pulsa R: Para aumentar todas las velocidades" << endl;
+         cout << "\t - Pulsa T: Para disminuir todas las velocidades " << endl;
+         cout << "\t - Pulsa Q: Para salir del menu " << endl;
+
+         break;
 
          // COMPLETAR con los diferentes opciones de teclado
       }
@@ -351,40 +400,72 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y)
       switch (toupper(tecla))
       {
       case 'Q':
+         menuInicial();
          if (modoMenu != NADA)
             modoMenu = NADA;
          break;
       case 'C':
          // ESTAMOS EN MODO SELECCION DE OBJETO
-         objetoMenu = CUBO;
+         if (bCubo)
+            bCubo = false;
+         else
+            bCubo = true;
          break;
       case 'T':
          // ESTAMOS EN MODO SELECCION DE OBJETO
-         objetoMenu = TETRAEDRO;
+         if (bTetraedro)
+            bTetraedro = false;
+         else
+            bTetraedro = true;
          break;
       case 'H':
          // ESTAMOS EN MODO SELECCION DE OBJETO
-         objetoMenu = HORMIGA;
+         if (bHormiga)
+            bHormiga = false;
+         else
+            bHormiga = true;
          break;
       case 'P':
          // ESTAMOS EN MODO SELECCION DE OBJETO
-         objetoMenu = PEON;
+         if (bPeon)
+            bPeon = false;
+         else
+            bPeon = true;
          break;
       case 'E':
          // ESTAMOS EN MODO SELECCION DE OBJETO
-         objetoMenu = ESFERA;
+         if (bEsfera)
+            bEsfera = false;
+         else
+            bEsfera = true;
          break;
       case 'O':
          // ESTAMOS EN MODO SELECCION DE OBJETO
-         objetoMenu = CONO;
+         if (bCono)
+            bCono = false;
+         else
+            bCono = true;
          break;
       case 'I':
          // ESTAMOS EN MODO SELECCION DE OBJETO
-         objetoMenu = CILINDRO;
+         if (bCilindro)
+            bCilindro = false;
+         else
+            bCilindro = true;
          break;
-      case 'N':
+      case 'S':
          // ESTAMOS EN MODO SELECCION DE OBJETO
-         objetoMenu = NINGUNO;
+         if (bSuelo)
+            bSuelo = false;
+         else
+            bSuelo = true;
+         break;
+      case 'J':
+         // ESTAMOS EN MODO SELECCION DE OBJETO
+         if (bCatapulta)
+            bCatapulta = false;
+         else
+            bCatapulta = true;
          break;
       }
       break;
@@ -392,6 +473,7 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y)
       switch (toupper(tecla))
       {
       case 'Q':
+         menuInicial();
          if (modoMenu != NADA)
             modoMenu = NADA;
          break;
@@ -411,6 +493,7 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y)
       switch (toupper(tecla))
       {
       case 'Q':
+         menuInicial();
          if (modoMenu != NADA)
             modoMenu = NADA;
          break;
@@ -433,10 +516,148 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y)
       case 'I':
          // ESTAMOS EN MODO SELECCION DE VISUALIZACION
          visualizacionMenu = LUZ;
+         modoMenu = LUCES;
+         cout << "Estas en el menu de iluminación: " << endl;
+         cout << "\t - Pulsa 1: Para activar/desactivar la luz direccional" << endl;
+         cout << "\t - Pulsa 2: Para activar/desactivar la luz posicional" << endl;
+         cout << "\t - Pulsa W: Para incrementar angulo alfa " << endl;
+         cout << "\t - Pulsa E: Para decrementar el angulo alfa " << endl;
+         cout << "\t - Pulsa S: Para incrementar el angulo beta " << endl;
+         cout << "\t - Pulsa D: Para decrementar el angulo beta " << endl;
+         cout << "\t - Pulsa P: Para animar la luz puntual " << endl;
+         cout << "\t - Pulsa Q: Para salir del menu " << endl;
          break;
       case 'N':
          // ESTAMOS EN MODO SELECCION DE VISUALIZACION
          visualizacionMenu = LIMPIA;
+         break;
+      case 'T':
+         // ESTAMOS EN MODO SELECCION DE VISUALIZACION
+         if (tapas)
+            tapas = false;
+         else
+            tapas = true;
+         break;
+      }
+      break;
+   case LUCES:
+      switch (toupper(tecla))
+      {
+      case 'Q':
+         menuInicial();
+         bLuzSituacional = false;
+
+         if (modoMenu != NADA)
+            modoMenu = NADA;
+         break;
+      case 'P':
+         if (bLuzSituacional)
+            bLuzSituacional = false;
+         else
+            bLuzSituacional = true;
+         break;
+      case 'W':
+         luzDireccional->variarAnguloAlfa(1);
+         break;
+      case 'E':
+         luzDireccional->variarAnguloAlfa(-1);
+         break;
+      case 'S':
+         luzDireccional->variarAnguloBeta(1);
+         break;
+      case 'D':
+         luzDireccional->variarAnguloBeta(-1);
+         break;
+      case '1':
+         if (bLuzDireccional)
+         {
+            bLuzDireccional = false;
+            luzDireccional->desactivar();
+         }
+         else
+         {
+            bLuzDireccional = true;
+            luzDireccional->activar();
+         }
+
+         break;
+      case '2':
+         if (bLuzPosicional)
+         {
+            bLuzPosicional = false;
+            luzPosicional->desactivar();
+         }
+         else
+         {
+            bLuzPosicional = true;
+            luzPosicional->activar();
+         }
+         break;
+      }
+      break;
+      break;
+   case GRADOLIBERTAD:
+      switch (toupper(tecla))
+      {
+      case 'Q':
+         menuInicial();
+         if (modoMenu != NADA)
+            modoMenu = NADA;
+         break;
+      case 'W':
+         catapulta->alturaCatapulta(0.1);
+         break;
+      case 'E':
+         catapulta->alturaCatapulta(-0.1);
+
+         break;
+      case 'S':
+         catapulta->rotacionCatapulta(10);
+         break;
+      case 'D':
+         catapulta->rotacionCatapulta(-10);
+         break;
+      case 'X':
+         catapulta->rotacionCuchara(10);
+         break;
+      case 'C':
+         catapulta->rotacionCuchara(-10);
+         break;
+      }
+      break;
+   case ANIMACION:
+      switch (toupper(tecla))
+      {
+      case 'Q':
+         bAnimacion = false;
+         menuInicial();
+         if (modoMenu != NADA)
+            modoMenu = NADA;
+         break;
+      case 'W':
+         catapulta->modificarVelocidadAnimacionAltura(1.1);
+         break;
+      case 'E':
+         catapulta->modificarVelocidadAnimacionAltura(0.9);
+
+         break;
+      case 'S':
+         catapulta->modificarVelocidadAnimacionRotacion(1.1);
+         break;
+      case 'D':
+         catapulta->modificarVelocidadAnimacionRotacion(0.9);
+         break;
+      case 'X':
+         catapulta->modificarVelocidadAnimacionCuchara(1.1);
+         break;
+      case 'C':
+         catapulta->modificarVelocidadAnimacionCuchara(0.9);
+         break;
+      case 'R':
+         catapulta->modificarVelocidad(1.1);
+         break;
+      case 'T':
+         catapulta->modificarVelocidad(0.9);
          break;
       }
       break;
@@ -444,7 +665,6 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y)
 
    return salir;
 }
-//**************************************************************************
 
 void Escena::teclaEspecial(int Tecla1, int x, int y)
 {

@@ -81,7 +81,6 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool p
    {
       glDisable(GL_TEXTURE_2D);
       glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
    }
    // deshabilitar array de vértices
    glDisableClientState(GL_VERTEX_ARRAY);
@@ -111,6 +110,14 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
    }
    // especificar localización y formato de la tabla de vértices, habilitar tabla
    glEnable(GL_CULL_FACE);
+   if (t != nullptr)
+   {
+      glEnable(GL_TEXTURE_2D);
+      t->activar();
+      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+      glTexCoordPointer(2, GL_FLOAT, 0, ct.data());
+   }
+
    glBindBuffer(GL_ARRAY_BUFFER, id_vbo_ver); // activar VBO de vértices
    glVertexPointer(3, GL_FLOAT, 0, 0);        // especifica formato y offset (=0)
    glBindBuffer(GL_ARRAY_BUFFER, 0);          //desactivar VBO de vértices
@@ -202,6 +209,11 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
       }
    }
 
+   if (t != nullptr)
+   {
+      glDisable(GL_TEXTURE_2D);
+      glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+   }
    glDisableClientState(GL_COLOR_ARRAY);
    // descativar uso de array de vértices
    glDisableClientState(GL_VERTEX_ARRAY);
