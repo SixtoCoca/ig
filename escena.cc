@@ -45,11 +45,15 @@ Escena::Escena()
    modoDibujo = false;
    cubo = new Cubo(50);
    cubo->setMaterial(oro);
+   cubo->setTextura("texturas/cesped.jpg");
    catapulta = new Catapulta();
    tetraedro = new Tetraedro(100);
    tetraedro->setMaterial(oro);
+   tetraedro->setTextura("texturas/cesped.jpg");
    esfera = new Esfera(20, 20, 10);
    esfera->setMaterial(cobre);
+   suelo = new Cuadro(1);
+   suelo->setTextura("texturas/cesped.jpg");
 
    cono = new Cono(10, 50, 10, 5, EJEZ);
    cono->setMaterial(oro);
@@ -67,7 +71,7 @@ Escena::Escena()
 
    //luces
 
-   luzPosicional = new LuzPosicional({0, 0, 0}, GL_LIGHT1, {0.6, 0.0, 0.0, 1.0}, {0.6, 0.0, 0.0, 1.0}, {0.6, 0.0, 0.0, 1.0});
+   luzPosicional = new LuzPosicional({200, 150, 200}, GL_LIGHT1, {0.6, 0.0, 0.0, 1.0}, {0.6, 0.0, 0.0, 1.0}, {0.6, 0.0, 0.0, 1.0});
 
    luzDireccional = new LuzDireccional({10, 10, 4}, GL_LIGHT2, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
 }
@@ -157,8 +161,12 @@ void Escena::dibujar()
    if (luz)
    {
       glEnable(GL_LIGHTING);
-      luzPosicional->activar();
+      std::cout << "la rotacion es " << rotacionLuz<<std::endl; 
+      glPushMatrix();
       luzDireccional->activar();
+      glRotatef(rotacionLuz,0.0f,1.0f,0.0f);
+      luzPosicional->activar();
+      glPopMatrix();
    }
    else
    {
@@ -228,23 +236,29 @@ void Escena::dibujar()
    }
    if (cubo != nullptr && bCubo)
    {
-      catapulta->rotacionCuchara(20);
+
+      // catapulta->rotacionCuchara(-40);
       glPushMatrix();
-      glTranslatef(-40, 0, -50);
+      // glTranslatef(-40, 0, -50);
       cubo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      glTranslatef(-1000, 0, 1000);
+      glRotatef(-90, 1, 0, 0);
+      glScalef(2000, 2000, 2000);
+      //suelo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
       glPopMatrix();
    }
    if (tetraedro != nullptr && bTetraedro)
    {
+      rotacionLuz += 10.0f;
       glPushMatrix();
       catapulta->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
       // glTranslatef(0, 0, -200);
-      // tetraedro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      //tetraedro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
       glPopMatrix();
    }
    if (esfera != nullptr && bEsfera)
    {
-      catapulta->rotacionCuchara(-20);
+      catapulta->rotacionCuchara(20);
       catapulta->alturaCatapulta(2);
       catapulta->rotacionCatapulta(30);
 

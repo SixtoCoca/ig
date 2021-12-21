@@ -12,7 +12,7 @@
 
 #include "aux.h"
 #include "material.h"
-
+#include "textura.h"
 // *****************************************************************************
 //
 // clase para objetos 3D (mallas indexadas)
@@ -47,6 +47,7 @@ public:
 
    void setMaterial(Material *mat);
 
+   void setTextura(const std::string &archivo);
 protected:
    void calcular_normales(); // calcula tabla de normales de vértices (práctica 3)
    void asignarColores();    //para asignarlos colores en los constructores de los objetos
@@ -59,9 +60,10 @@ protected:
    std::vector<Tupla3f> colorPar, colorImpar; //Contendran los colores de las caras pares e impares
    Material *m;
 
+   Textura *t = nullptr;
+   std::vector<Tupla2f> ct;
    GLuint id_vbo_ver = 0, id_vbo_tri = 0, id_vbo_color = 0, id_vbo_color_par = 0, id_vbo_color_impar = 0, id_vbo_tri_par = 0, id_vbo_tri_impar = 0, id_vbo_normales = 0;
    GLuint CrearVBO(GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid *puntero_ram);
-   // completar: tabla de colores, tabla de normales de vértices
 };
 
 #endif

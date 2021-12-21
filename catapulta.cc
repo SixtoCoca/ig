@@ -8,11 +8,11 @@
 
 Catapulta::Catapulta()
 {
-   alturaBase = 0;
+   alturaBase = 10;
    rotacion = 0;
    base = new Cubo(1);
-   elevador = new Cilindro(6, 6, 1, 3);
-   baseRotatoria = new Cilindro(6, 100, 2, 30);
+   elevador = new Cilindro(6, 6, 1, 1);
+   baseRotatoria = new Cilindro(6, 100, 1, 1);
 
    estructura = new Estructura();
    cuchara = new Cuchara();
@@ -31,15 +31,14 @@ void Catapulta::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool pu
          //Rectangulo apoyo
          glPushMatrix();
          {
-            glScalef(5, 5, 5);
-            glScalef(10, 1, 10);
+            glScalef(50, 5, 50);
             base->draw(modo, ajedrez, alambre, solido, puntos, luz);
          }
          glPopMatrix();
          //elevador
          glPushMatrix();
          {
-            glScalef(1, alturaBase, 1);
+            glScalef(4, alturaBase, 4);
             elevador->draw(modo, ajedrez, alambre, solido, puntos, luz);
          }
          glPopMatrix();
@@ -50,15 +49,28 @@ void Catapulta::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool pu
       {
          glTranslatef(0, alturaBase, 0);
          glRotatef(rotacion, 0.0f, 1.0f, 0.0f);
-         baseRotatoria->draw(modo, ajedrez, alambre, solido, puntos, luz);
-
-         estructura->draw(modo, ajedrez, alambre, solido, puntos, luz);
-
-         //Cuchara
          glPushMatrix();
          {
-            glTranslatef(-20, 50, -20);
-            cuchara->draw(modo, ajedrez, alambre, solido, puntos, luz);
+            glScalef(40, 2, 40);
+            baseRotatoria->draw(modo, ajedrez, alambre, solido, puntos, luz);
+         }
+         glPopMatrix();
+
+         //lanzador
+         glPushMatrix();
+         {
+            glPushMatrix();
+            {
+               estructura->draw(modo, ajedrez, alambre, solido, puntos, luz);
+            }
+            glPopMatrix();
+            //Cuchara
+            glPushMatrix();
+            {
+               glTranslatef(-20, 50, -20);
+               cuchara->draw(modo, ajedrez, alambre, solido, puntos, luz);
+            }
+            glPopMatrix();
          }
          glPopMatrix();
       }
@@ -80,5 +92,5 @@ void Catapulta::alturaCatapulta(float incremento)
 void Catapulta::rotacionCatapulta(float incremento)
 {
    rotacion += incremento;
-   rotacion = fmod(rotacion,360);
+   rotacion = fmod(rotacion, 360);
 }

@@ -6,6 +6,7 @@
 #include "cubo.h"
 #include "esfera.h"
 #include "cono.h"
+#include "cuadro.h"
 #include "cilindro.h"
 #include "tetraedro.h"
 #include "objply.h"
@@ -76,6 +77,7 @@ private:
     bool ajedrez, solido, puntos, alambre, luz; //modo de visualización
     bool bCubo = false, bTetraedro = false, bPeon = false, bHormiga = false, bEsfera = false, bCono = false, bCilindro = false;
     bool aux=true;
+    float rotacionLuz=0.0f;
     ; //modo de visualización
     // Objetos de la escena
     Ejes ejes;
@@ -92,6 +94,7 @@ private:
     ObjRevolucion *objrevolucion2 = nullptr; // es importante inicializarlo a 'nullptr'
     ObjRevolucion *objrevolucion3 = nullptr; // es importante inicializarlo a 'nullptr'
     Catapulta *catapulta = nullptr; // es importante inicializarlo a 'nullptr'
+    Cuadro *suelo = nullptr; // es importante inicializarlo a 'nullptr'
 
     //Luces
     LuzPosicional *luzPosicional = nullptr;

@@ -20,6 +20,14 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool p
    // vértices (son tuplas de 3 valores float, sin espacio entre ellas)
    glVertexPointer(3, GL_FLOAT, 0, v.data());
    glEnable(GL_CULL_FACE);
+   if (t != nullptr)
+   {
+      glEnable(GL_TEXTURE_2D);
+      t->activar();
+      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+      glTexCoordPointer(2, GL_FLOAT, 0, ct.data());
+   }
+
    if (luz)
    {
       //Aplicamos el material
@@ -69,6 +77,12 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool p
       }
    }
 
+   if (t != nullptr)
+   {
+      glDisable(GL_TEXTURE_2D);
+      glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+   }
    // deshabilitar array de vértices
    glDisableClientState(GL_VERTEX_ARRAY);
    glDisableClientState(GL_COLOR_ARRAY);
@@ -154,7 +168,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
 
          glBindBuffer(GL_ARRAY_BUFFER, id_vbo_color_par); // activar VBO de colores
          glColorPointer(3, GL_FLOAT, 0, 0);
-         glBindBuffer(GL_ARRAY_BUFFER, 0);                //desactivar VBO de colores
+         glBindBuffer(GL_ARRAY_BUFFER, 0); //desactivar VBO de colores
 
          glDrawElements(GL_TRIANGLES, 3 * caraPar.size(), GL_UNSIGNED_INT, 0);
          glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // desactivar VBO de triángulo
@@ -162,7 +176,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
          glBindBuffer(GL_ARRAY_BUFFER, id_vbo_color_impar); // activar VBO de colores
 
          glColorPointer(3, GL_FLOAT, 0, 0);
-         glBindBuffer(GL_ARRAY_BUFFER, 0);                  //desactivar VBO de colores
+         glBindBuffer(GL_ARRAY_BUFFER, 0); //desactivar VBO de colores
          glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri_impar);
          glDrawElements(GL_TRIANGLES, 3 * caraImpar.size(), GL_UNSIGNED_INT, 0);
          glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // desactivar VBO de triángulo
@@ -310,4 +324,20 @@ void Malla3D::calcular_normales()
 void Malla3D::setMaterial(Material *material)
 {
    m = material;
+}
+
+void Malla3D::setTextura(const std::string &archivo)
+{
+   if (t != nullptr)
+      delete t;
+
+   t = new Textura(archivo);
+
+   ct.resize(v.size());
+
+   for (int i = 0; i < ct.size(); i++)
+   {
+      ct[i] = {v[i][0],
+               (v[i][1] - v.front()[1]) / (v.back()[1] - v.front()[1])};
+   }
 }

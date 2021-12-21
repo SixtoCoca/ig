@@ -34,9 +34,9 @@ class ObjRevolucion : public Malla3D
 {
 public:
     ObjRevolucion();
-    ObjRevolucion(const std::string &archivo, int num_instancias, bool tapa_sup = true, bool tapa_inf = true, eje ejeR=EJEY);
-    ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup = true, bool tapa_inf = true, eje ejeR=EJEY);
-    void pintarConTapas(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz,bool tapas);
+    ObjRevolucion(const std::string &archivo, int num_instancias, bool tapa_sup = true, bool tapa_inf = true, eje ejeR = EJEY);
+    ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup = true, bool tapa_inf = true, eje ejeR = EJEY);
+    void pintarConTapas(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool tapas);
 
 protected:
     std::vector<Tupla3f> perfil;
@@ -52,6 +52,7 @@ private:
     Tupla3f tieneVerticeInferior(std::vector<Tupla3f> perfil_original);
     void crearTapaSuperior(int num_instancias, bool tapa_sup);
     void crearTapaInferior(int num_instancias, bool tapa_inf);
+    // void asignarPuntosTextura() override;
 };
 
 #endif

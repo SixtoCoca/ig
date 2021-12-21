@@ -22,7 +22,11 @@ void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool punt
    glPushMatrix();
    {
       glRotatef(rotacionX, 1.0f, 0.0f, 0.0f);
-      ejeRotacion->draw(modo, ajedrez, alambre, solido, puntos, luz);
+      glPushMatrix();
+      {
+         ejeRotacion->draw(modo, ajedrez, alambre, solido, puntos, luz);
+      }
+      glPopMatrix();
 
       //brazo de lanzamiento
       glPushMatrix();
@@ -60,12 +64,11 @@ void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool punt
    glPopMatrix();
 }
 
-void Cuchara::rotacion(float incremento)//Lo resto por mi modelo
+void Cuchara::rotacion(float incremento) //Lo resto por mi modelo
 {
    rotacionX -= incremento;
-   if(-rotacionX >= 240)      //240 es el tope que he estimado
-      rotacionX = -240; 
-   if(rotacionX >= 30 )       //30 es el otro tope
-      rotacionX=30;   
-   std::cout << "el angulo es " << rotacionX;
+   if (-rotacionX >= 240) //240 es el tope que he estimado
+      rotacionX = -240;
+   if (rotacionX >= 30) //30 es el otro tope
+      rotacionX = 30;
 }

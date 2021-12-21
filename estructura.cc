@@ -44,7 +44,7 @@ void Estructura::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool p
          glPopMatrix();
          glPushMatrix();
          {
-            glTranslatef(-25, 0, 26);
+            glTranslatef(-25, 0, 20);
             base2->draw(modo, ajedrez, alambre, solido, puntos, luz);
          }
          glPopMatrix();
