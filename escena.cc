@@ -83,6 +83,12 @@ Escena::Escena()
    luzPosicional = new LuzPosicional({200, 150, 200}, GL_LIGHT1, {0.6, 0.0, 0.0, 1.0}, {0.6, 0.0, 0.0, 1.0}, {0.6, 0.0, 0.0, 1.0});
 
    luzDireccional = new LuzDireccional({10, 10, 4}, GL_LIGHT2, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
+
+   // camaras
+   camaras[0] = new Camara({100, 100, 0}, {0, 0, 0}, {0, 1, 0}, PERSPECTIVA, 100, 20000,0,0,0,0);
+   camaras[1] = new Camara({0, 20, 300}, {0, 0, 0}, {0, 1, 0}, ORTOGONAL, 100, 3000,10,10,10,10);
+   camaras[2] = new Camara({0, 100, 100}, {0, 0, 0}, {0, 1, 0}, PERSPECTIVA, 100, 3000,10,10,10,10);
+   camaraActiva = 0;
 }
 
 //**************************************************************************
@@ -96,11 +102,19 @@ void Escena::inicializar(int UI_window_width, int UI_window_height)
    glClearColor(1.0, 1.0, 1.0, 1.0); // se indica cual sera el color para limpiar la ventana	(r,v,a,al)
 
    glEnable(GL_DEPTH_TEST); // se habilita el z-bufer
+   glEnable(GL_NORMALIZE);
+   
+   for(int i=0; i < 3; i++){
+      camaras[i]->nuevoLeft(-UI_window_width/10);
+      camaras[i]->nuevoRight(UI_window_width/10);
+      camaras[i]->nuevoTop(-UI_window_height/10);
+      camaras[i]->nuevoBottom(UI_window_height/10);
+   }
 
-   Width = UI_window_width / 10;
-   Height = UI_window_height / 10;
 
-   change_projection(float(UI_window_width) / float(UI_window_height));
+   std::cout << "cual es la activa " << camaraActiva << std::endl;
+   change_projection();
+   change_observer();
    glViewport(0, 0, UI_window_width, UI_window_height);
    menuInicial();
 }
@@ -671,25 +685,25 @@ void Escena::teclaEspecial(int Tecla1, int x, int y)
    switch (Tecla1)
    {
    case GLUT_KEY_LEFT:
-      Observer_angle_y--;
+      camaras[camaraActiva]->rotarYExaminar(-1 * (M_PI / 180));
       break;
    case GLUT_KEY_RIGHT:
-      Observer_angle_y++;
+      camaras[camaraActiva]->rotarYExaminar(1 * (M_PI / 180));
       break;
    case GLUT_KEY_UP:
-      Observer_angle_x--;
+      camaras[camaraActiva]->rotarXExaminar(-1 * (M_PI / 180));
       break;
    case GLUT_KEY_DOWN:
-      Observer_angle_x++;
+      camaras[camaraActiva]->rotarXExaminar(1 * (M_PI / 180));
       break;
    case GLUT_KEY_PAGE_UP:
-      Observer_distance *= 1.2;
+      camaras[camaraActiva]->zoom(0.8);
       break;
    case GLUT_KEY_PAGE_DOWN:
-      Observer_distance /= 1.2;
+      camaras[camaraActiva]->zoom(1.2);
       break;
    }
-
+   change_projection();
    //std::cout << Observer_distance << std::endl;
 }
 
@@ -700,12 +714,14 @@ void Escena::teclaEspecial(int Tecla1, int x, int y)
 //
 //***************************************************************************
 
-void Escena::change_projection(const float ratio_xy)
+void Escena::change_projection()
 {
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
-   const float wx = float(Height) * ratio_xy;
-   glFrustum(-wx, wx, -Height, Height, Front_plane, Back_plane);
+   // const float wx = float(Height) * ratio_xy;
+   // glFrustum(-wx, wx, -Height, Height, Front_plane, Back_plane);
+   
+   camaras[camaraActiva]->setProyeccion();
 }
 //**************************************************************************
 // Funcion que se invoca cuando cambia el tamaño de la ventana
@@ -715,7 +731,7 @@ void Escena::redimensionar(int newWidth, int newHeight)
 {
    Width = newWidth / 10;
    Height = newHeight / 10;
-   change_projection(float(newHeight) / float(newWidth));
+   change_projection();
    glViewport(0, 0, newWidth, newHeight);
 }
 
@@ -728,7 +744,19 @@ void Escena::change_observer()
    // posicion del observador
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   glTranslatef(0.0, 0.0, -Observer_distance);
-   glRotatef(Observer_angle_y, 0.0, 1.0, 0.0);
-   glRotatef(Observer_angle_x, 1.0, 0.0, 0.0);
+   // glTranslatef(0.0, 0.0, -Observer_distance);
+   // glRotatef(Observer_angle_y, 0.0, 1.0, 0.0);
+   // glRotatef(Observer_angle_x, 1.0, 0.0, 0.0);
+   camaras[camaraActiva]->setObserver();
+}
+
+//**************************************************************************
+// Funcion para cambiar la camara
+//***************************************************************************
+
+void Escena::cambiaCamara(int n)
+{
+   camaraActiva = n;
+   change_observer();
+   // change_projection();
 }

@@ -1,6 +1,7 @@
 #ifndef _ESCENA_H
 #define _ESCENA_H
 
+#include "aux.h"
 #include "ejes.h"
 #include "malla.h"
 #include "cubo.h"
@@ -16,6 +17,7 @@
 #include "luz.h"
 #include "luzposicional.h"
 #include "luzdireccional.h"
+#include "camara.h"
 
 typedef enum
 {
@@ -67,7 +69,7 @@ private:
     GLfloat Width, Height, Front_plane, Back_plane;
 
     // Transformación de cámara
-    void change_projection(const float ratio_xy);
+    void change_projection();
     void change_observer();
 
     void clear_window();
@@ -110,6 +112,11 @@ private:
     Material *blanco = nullptr;
     Material *negro = nullptr;
 
+    //Camaras
+    Camara *camaras[3];
+    int camaraActiva;
+
+
 public:
     Escena();
     void inicializar(int UI_window_width, int UI_window_height);
@@ -119,6 +126,7 @@ public:
     void animacion();
     // Dibujar
     void dibujar();
+    void cambiaCamara(int n);
 
     // Interacción con la escena
     bool teclaPulsada(unsigned char Tecla1, int x, int y);
