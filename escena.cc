@@ -85,10 +85,10 @@ Escena::Escena()
    luzDireccional = new LuzDireccional({10, 10, 4}, GL_LIGHT2, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
 
    // camaras
-   camaras[0] = new Camara({100, 100, 0}, {0, 0, 0}, {0, 1, 0}, PERSPECTIVA, 100, 20000,0,0,0,0);
-   camaras[1] = new Camara({0, 20, 300}, {0, 0, 0}, {0, 1, 0}, ORTOGONAL, 100, 3000,10,10,10,10);
-   camaras[2] = new Camara({0, 100, 100}, {0, 0, 0}, {0, 1, 0}, PERSPECTIVA, 100, 3000,10,10,10,10);
-   camaraActiva = 0;
+   camaras[0] = new Camara({0, 100, 2000}, {0, 0, 0}, {0, 1, 0}, PERSPECTIVA, 100, 20000);
+   camaras[1] = new Camara({0, 200, 300}, {0, 0, 0}, {0, 1, 0}, ORTOGONAL, 100, 3000);
+   camaras[2] = new Camara({0, 100, 200}, {0, 0, 0}, {0, 1, 0}, PERSPECTIVA, 100, 3000);
+   cam = 0;
 }
 
 //**************************************************************************
@@ -103,16 +103,16 @@ void Escena::inicializar(int UI_window_width, int UI_window_height)
 
    glEnable(GL_DEPTH_TEST); // se habilita el z-bufer
    glEnable(GL_NORMALIZE);
-   
-   for(int i=0; i < 3; i++){
-      camaras[i]->nuevoLeft(-UI_window_width/10);
-      camaras[i]->nuevoRight(UI_window_width/10);
-      camaras[i]->nuevoTop(-UI_window_height/10);
-      camaras[i]->nuevoBottom(UI_window_height/10);
+
+   for (int i = 0; i < 3; i++)
+   {
+      camaras[i]->nuevoLeft(-UI_window_width / 10);
+      camaras[i]->nuevoRight(UI_window_width / 10);
+      camaras[i]->nuevoTop(UI_window_height / 10);
+      camaras[i]->nuevoBottom(-UI_window_height / 10);
    }
 
-
-   std::cout << "cual es la activa " << camaraActiva << std::endl;
+   std::cout << "cual es la activa " << cam << std::endl;
    change_projection();
    change_observer();
    glViewport(0, 0, UI_window_width, UI_window_height);
@@ -318,6 +318,7 @@ void Escena::menuInicial()
    cout << "\t - Pulsa D: Modo dibujado " << endl;
    cout << "\t - Pulsa A: Animación automática" << endl;
    cout << "\t - Pulsa M: Mover Manualmente los grados de libertad" << endl;
+   cout << "\t - Pulsa C: Para entrar en el menu de camara" << endl;
 }
 //**************************************************************************
 
@@ -404,6 +405,16 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y)
          cout << "\t - Pulsa R: Para aumentar todas las velocidades" << endl;
          cout << "\t - Pulsa T: Para disminuir todas las velocidades " << endl;
          cout << "\t - Pulsa Q: Para salir del menu " << endl;
+
+         break;
+
+      case 'C':
+         modoMenu = CAMARAS;
+         cout << "Estas en el menu de camaras: " << endl;
+         cout << "\t - Pulsa Q: Para salir del menu " << endl;
+         cout << "\t - Pulsa 1: Para seleccionar la cámara 1 " << endl;
+         cout << "\t - Pulsa 2: Para seleccionar la cámara 2 " << endl;
+         cout << "\t - Pulsa 3: Para seleccionar la cámara 3 " << endl;
 
          break;
 
@@ -675,6 +686,26 @@ bool Escena::teclaPulsada(unsigned char tecla, int x, int y)
          break;
       }
       break;
+   case CAMARAS:
+      switch (toupper(tecla))
+      {
+      case 'Q':
+         menuInicial();
+         if (modoMenu != NADA)
+            modoMenu = NADA;
+         break;
+      case '1':
+         cambiaCamara(0);
+         break;
+      case '2':
+         cambiaCamara(1);
+         break;
+      case '3':
+         cambiaCamara(2);
+         break;
+      }
+
+      break;
    }
 
    return salir;
@@ -685,22 +716,22 @@ void Escena::teclaEspecial(int Tecla1, int x, int y)
    switch (Tecla1)
    {
    case GLUT_KEY_LEFT:
-      camaras[camaraActiva]->rotarYExaminar(-1 * (M_PI / 180));
+      camaras[cam]->rotarYExaminar(-1 * (M_PI / 180));
       break;
    case GLUT_KEY_RIGHT:
-      camaras[camaraActiva]->rotarYExaminar(1 * (M_PI / 180));
+      camaras[cam]->rotarYExaminar(1 * (M_PI / 180));
       break;
    case GLUT_KEY_UP:
-      camaras[camaraActiva]->rotarXExaminar(-1 * (M_PI / 180));
+      camaras[cam]->rotarXExaminar(-1 * (M_PI / 180));
       break;
    case GLUT_KEY_DOWN:
-      camaras[camaraActiva]->rotarXExaminar(1 * (M_PI / 180));
+      camaras[cam]->rotarXExaminar(1 * (M_PI / 180));
       break;
    case GLUT_KEY_PAGE_UP:
-      camaras[camaraActiva]->zoom(0.8);
+      camaras[cam]->zoom(0.8);
       break;
    case GLUT_KEY_PAGE_DOWN:
-      camaras[camaraActiva]->zoom(1.2);
+      camaras[cam]->zoom(1.2);
       break;
    }
    change_projection();
@@ -718,10 +749,8 @@ void Escena::change_projection()
 {
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
-   // const float wx = float(Height) * ratio_xy;
-   // glFrustum(-wx, wx, -Height, Height, Front_plane, Back_plane);
-   
-   camaras[camaraActiva]->setProyeccion();
+
+   camaras[cam]->setProyeccion();
 }
 //**************************************************************************
 // Funcion que se invoca cuando cambia el tamaño de la ventana
@@ -729,8 +758,14 @@ void Escena::change_projection()
 
 void Escena::redimensionar(int newWidth, int newHeight)
 {
-   Width = newWidth / 10;
-   Height = newHeight / 10;
+
+   float factor = (float)newWidth / (float)newHeight;
+
+   for (int i = 0; i < 3; i++)
+   {
+      camaras[i]->nuevoRight(camaras[i]->getTop() * factor);
+      camaras[i]->nuevoLeft(camaras[i]->getBottom() * factor);
+   }
    change_projection();
    glViewport(0, 0, newWidth, newHeight);
 }
@@ -744,10 +779,8 @@ void Escena::change_observer()
    // posicion del observador
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   // glTranslatef(0.0, 0.0, -Observer_distance);
-   // glRotatef(Observer_angle_y, 0.0, 1.0, 0.0);
-   // glRotatef(Observer_angle_x, 1.0, 0.0, 0.0);
-   camaras[camaraActiva]->setObserver();
+
+   camaras[cam]->setObserver();
 }
 
 //**************************************************************************
@@ -756,7 +789,7 @@ void Escena::change_observer()
 
 void Escena::cambiaCamara(int n)
 {
-   camaraActiva = n;
+   cam = n;
    change_observer();
-   // change_projection();
+   change_projection();
 }

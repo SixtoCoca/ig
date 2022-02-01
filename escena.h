@@ -27,7 +27,8 @@ typedef enum
     SELDIBUJADO,
     LUCES,
     GRADOLIBERTAD,
-    ANIMACION
+    ANIMACION,
+    CAMARAS
 } menu;
 typedef enum
 {
@@ -85,7 +86,7 @@ private:
     bool bLuzDireccional = true, bLuzPosicional = true;
     bool bCubo = true, bSuelo = true, bTetraedro = true, bPeonTapa = true, bPeon = true, bHormiga = true, bEsfera = true, bCono = true, bCilindro = true, bCatapulta = true;
     float luzAnimada = 0.0f;
-    ; //modo de visualización
+    //modo de visualización
     // Objetos de la escena
     Ejes ejes;
 
@@ -114,7 +115,7 @@ private:
 
     //Camaras
     Camara *camaras[3];
-    int camaraActiva;
+    int cam;
 
 
 public:

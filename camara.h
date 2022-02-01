@@ -31,7 +31,7 @@ private:
    float left, right, bottom, top, near, far;
 
 public:
-   Camara(const Tupla3f &eye, const Tupla3f &at, const Tupla3f &up, const tipoCamara tipo, const float near, const float far,const float l,const float r,const float t,const float b);
+   Camara(const Tupla3f &eye, const Tupla3f &at, const Tupla3f &up, const tipoCamara tipo, const float near, const float far);
 
    void rotarXExaminar(float angulo);
    void rotarYExaminar(float angulo);
@@ -49,6 +49,8 @@ public:
    void nuevoRight(float r);
    void nuevoBottom(float b);
    void nuevoTop(float t);
+   float getBottom();
+   float getTop();
 };
 
 #endif

@@ -1,6 +1,6 @@
 #include "camara.h"
 
-Camara::Camara(const Tupla3f &eye, const Tupla3f &at, const Tupla3f &up, const tipoCamara tipo, const float near, const float far, const float l, const float r, const float t, const float b)
+Camara::Camara(const Tupla3f &eye, const Tupla3f &at, const Tupla3f &up, const tipoCamara tipo, const float near, const float far)
 {
    this->eye = eye;
    this->at = at;
@@ -8,10 +8,6 @@ Camara::Camara(const Tupla3f &eye, const Tupla3f &at, const Tupla3f &up, const t
    this->tipo = tipo;
    this->near = near;
    this->far = far;
-   this->left = l;
-   this->right = r;
-   this->bottom = b;
-   this->top = t;
 }
 
 void Camara::rotarXExaminar(float angulo)
@@ -20,7 +16,7 @@ void Camara::rotarXExaminar(float angulo)
    Tupla3f centro = eye - at;
 
    centro[1] = cos(angulo) * centro[1] - sin(angulo) * centro[2];
-   centro[2] = sin(angulo) * centro[1] + sin(angulo) * centro[2];
+   centro[2] = sin(angulo) * centro[1] + cos(angulo) * centro[2];
    centro = centro.normalized() * sqrt(centro.lengthSq()); //Centro Normalizado por el modulo
 
    //añadimos el at que hemos quitador anteriormente
@@ -118,25 +114,39 @@ void Camara::setObserver()
 
 void Camara::setProyeccion()
 {
-   std::cout << "todos los parametros de la camara:" << left << " " << right << " " << bottom << " " << top << " " << near << " " << far;
+   // std::cout << "todos los parametros de la camara:" << left << " " << right << " " << bottom << " " << top << " " << near << " " << far;
    if (tipo == ORTOGONAL)
       glOrtho(left, right, bottom, top, near, far);
    else
       glFrustum(left, right, bottom, top, near, far);
 }
 
-void Camara::nuevoLeft(float l){
+void Camara::nuevoLeft(float l)
+{
    left = l;
 }
 
-void Camara::nuevoRight(float r){
+void Camara::nuevoRight(float r)
+{
    right = r;
 }
 
-void Camara::nuevoTop(float t){
+void Camara::nuevoTop(float t)
+{
    top = t;
 }
 
-void Camara::nuevoBottom(float b){
+void Camara::nuevoBottom(float b)
+{
    bottom = b;
+}
+
+float Camara::getBottom()
+{
+   return bottom;
+}
+
+float Camara::getTop()
+{
+   return top;
 }
