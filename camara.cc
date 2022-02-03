@@ -8,6 +8,8 @@ Camara::Camara(const Tupla3f &eye, const Tupla3f &at, const Tupla3f &up, const t
    this->tipo = tipo;
    this->near = near;
    this->far = far;
+
+   objeto = CAMNINGUNO;
 }
 
 void Camara::rotarXExaminar(float angulo)
@@ -55,7 +57,7 @@ void Camara::rotarXFirstPerson(float angulo)
    Tupla3f centro = at - eye;
 
    centro[1] = cos(angulo) * centro[1] - sin(angulo) * centro[2];
-   centro[2] = sin(angulo) * centro[1] + sin(angulo) * centro[2];
+   centro[2] = sin(angulo) * centro[1] + cos(angulo) * centro[2];
    centro = centro.normalized() * sqrt(centro.lengthSq()); //Centro Normalizado por el modulo
 
    //añadimos el eye que hemos quitador anteriormente
@@ -97,6 +99,18 @@ void Camara::mover(float x, float y, float z)
    at[0] += x;
    at[1] += y;
    at[2] += z;
+}
+
+void Camara::girarFirstPerson(float x, float y)
+{
+   rotarXFirstPerson(-y * (M_PI / 180));
+   rotarYFirstPerson(-x * (M_PI / 180));
+}
+
+void Camara::girarExaminar(float x, float y)
+{
+   rotarXExaminar(abs(y) * (M_PI / 180));
+   rotarYExaminar(x * (M_PI / 180));
 }
 
 void Camara::zoom(float factor)
@@ -149,4 +163,20 @@ float Camara::getBottom()
 float Camara::getTop()
 {
    return top;
+}
+
+objetos Camara::getObjeto()
+{
+   return objeto;
+}
+void Camara::setObjeto(objetos o)
+{
+   objeto = o;
+}
+
+void Camara::setAt(float x, float y, float z)
+{
+   at[0] = x;
+   at[1] = y;
+   at[2] = z;
 }

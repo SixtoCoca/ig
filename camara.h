@@ -18,6 +18,14 @@ typedef enum
    ORTOGONAL,
    PERSPECTIVA
 } tipoCamara;
+
+typedef enum
+{
+   CAMCATAPULTA,
+   CAMESFERA,
+   CAMCUBO,
+   CAMNINGUNO
+} objetos;
 // *****************************************************************************
 //
 // Clase camara (práctica 3)
@@ -28,6 +36,7 @@ class Camara
 private:
    Tupla3f eye, at, up;
    tipoCamara tipo;
+   objetos objeto;
    float left, right, bottom, top, near, far;
 
 public:
@@ -41,6 +50,8 @@ public:
    void rotarZFirstPerson(float angulo);
 
    void mover(float x, float y, float z);
+   void girarFirstPerson(float x, float y);
+   void girarExaminar(float x, float y);
 
    void zoom(float factor);
    void setObserver();
@@ -51,6 +62,9 @@ public:
    void nuevoTop(float t);
    float getBottom();
    float getTop();
+   objetos getObjeto();
+   void setObjeto(objetos o);
+   void setAt(float x, float y, float z);
 };
 
 #endif

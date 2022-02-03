@@ -26,7 +26,8 @@ private:
 
 public:
    Estructura();
-   void draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz);
+   void draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz,bool seleccionado, bool seleccionable);
+   void asignarColoresSeleccion(Tupla3f c);
 };
 
 #endif

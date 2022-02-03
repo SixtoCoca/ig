@@ -9,7 +9,7 @@
 
 // Visualización en modo inmediato con 'glDrawElements'
 
-void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool puntos, bool luz)
+void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccion, bool seleccionable)
 {
 
    // visualizar la malla usando glDrawElements,
@@ -20,7 +20,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool p
    // vértices (son tuplas de 3 valores float, sin espacio entre ellas)
    glVertexPointer(3, GL_FLOAT, 0, v.data());
    glEnable(GL_CULL_FACE);
-   if (t != nullptr)
+   if (t != nullptr && !seleccion)
    {
       glEnable(GL_TEXTURE_2D);
       t->activar();
@@ -28,7 +28,12 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool p
       glTexCoordPointer(2, GL_FLOAT, 0, ct.data());
    }
 
-   if (luz)
+   if (seleccion)
+   {
+      modoSeleccion();
+      glDrawElements(GL_TRIANGLES, f.size() * 3, GL_UNSIGNED_INT, f.data());
+   }
+   else if (luz)
    {
       //Aplicamos el material
       m->aplicar();
@@ -77,7 +82,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool p
       }
    }
 
-   if (t != nullptr)
+   if (t != nullptr && !seleccion)
    {
       glDisable(GL_TEXTURE_2D);
       glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -89,7 +94,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool p
 // -----------------------------------------------------------------------------
 // Visualización en modo diferido con 'glDrawElements' (usando VBOs)
 
-void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool puntos, bool luz)
+void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccion, bool seleccionable)
 {
    // (la primera vez, se deben crear los VBOs y guardar sus identificadores en el objeto)
    if (id_vbo_ver == 0)
@@ -110,14 +115,14 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
    }
    // especificar localización y formato de la tabla de vértices, habilitar tabla
    glEnable(GL_CULL_FACE);
-   if (t != nullptr)
+
+   if (t != nullptr && !seleccion)
    {
       glEnable(GL_TEXTURE_2D);
       t->activar();
       glEnableClientState(GL_TEXTURE_COORD_ARRAY);
       glTexCoordPointer(2, GL_FLOAT, 0, ct.data());
    }
-
    glBindBuffer(GL_ARRAY_BUFFER, id_vbo_ver); // activar VBO de vértices
    glVertexPointer(3, GL_FLOAT, 0, 0);        // especifica formato y offset (=0)
    glBindBuffer(GL_ARRAY_BUFFER, 0);          //desactivar VBO de vértices
@@ -126,7 +131,22 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
    glBindBuffer(GL_ARRAY_BUFFER, id_vbo_color); // activar VBO de colores
    glBindBuffer(GL_ARRAY_BUFFER, 0);            //desactivar VBO de colores
    glEnableClientState(GL_COLOR_ARRAY);         // habilitar tabla de vértices para el color
-   if (luz)
+
+   if (seleccionable)
+   {
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri); //activar VBO de triángulos
+
+      modoSeleccionable();
+      glDrawElements(GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, 0);
+   }
+   if (seleccion)
+   {
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri); //activar VBO de triángulos
+
+      modoSeleccion();
+      glDrawElements(GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, 0);
+   }
+   else if (luz)
    {
       //Aplicamos el material
       glEnable(GL_NORMALIZE);
@@ -209,7 +229,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
       }
    }
 
-   if (t != nullptr)
+   if (t != nullptr && !seleccion)
    {
       glDisable(GL_TEXTURE_2D);
       glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -223,18 +243,26 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
 // Función de visualización de la malla,
 // puede llamar a  draw_ModoInmediato o bien a draw_ModoDiferido
 
-void Malla3D::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz)
+void Malla3D::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccion, bool seleccionable)
 {
    if (modo)
    {
-      draw_ModoInmediato(ajedrez, alambre, solido, puntos, luz);
+      draw_ModoInmediato(ajedrez, alambre, solido, puntos, luz, seleccion, seleccionable);
    }
    else
    {
-      draw_ModoDiferido(ajedrez, alambre, solido, puntos, luz);
+      draw_ModoDiferido(ajedrez, alambre, solido, puntos, luz, seleccion, seleccionable);
    }
 }
 
+// -----------------------------------------------------------------------------
+// Función para dibujar en modo puntos
+
+void Malla3D::modoSeleccion()
+{
+   glColorPointer(3, GL_FLOAT, 0, colorSeleccion.data());
+   glPolygonMode(GL_FRONT, GL_FILL);
+}
 // -----------------------------------------------------------------------------
 // Función para dibujar en modo alambre
 
@@ -250,6 +278,16 @@ void Malla3D::modoAlambre()
 void Malla3D::modoPuntos()
 {
    glColorPointer(3, GL_FLOAT, 0, colorPuntos.data());
+   glPolygonMode(GL_FRONT, GL_POINT);
+   glPointSize(5);
+}
+
+// -----------------------------------------------------------------------------
+// Función para dibujar en modo seleccionable
+
+void Malla3D::modoSeleccionable()
+{
+   glColorPointer(3, GL_FLOAT, 0, colorSeleccionable.data());
    glPolygonMode(GL_FRONT, GL_POINT);
    glPointSize(5);
 }
@@ -274,13 +312,14 @@ GLuint Malla3D::CrearVBO(GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid *puntero_
 
 void Malla3D::asignarColores()
 {
-
    for (int i = 0; i < v.size(); i++)
       color.push_back({255, 0, 0});
    for (int i = 0; i < v.size(); i++)
       colorAlambre.push_back({255, 255, 0});
    for (int i = 0; i < v.size(); i++)
       colorPuntos.push_back({0, 255, 255});
+   for (int i = 0; i < v.size(); i++)
+      colorSeleccionable.push_back({0, 0, 0});
    for (int i = 0; i < f.size(); i++)
    {
       if (i % 2 == 0)
@@ -299,6 +338,11 @@ void Malla3D::asignarColores()
    }
 }
 
+void Malla3D::asignarColoresSeleccion(Tupla3f c)
+{
+   for (int i = 0; i < v.size(); i++)
+      colorSeleccion.push_back(c);
+}
 void Malla3D::calcular_normales()
 {
    nv.resize(v.size());

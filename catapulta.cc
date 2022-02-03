@@ -34,7 +34,7 @@ Catapulta::Catapulta()
    cuchara = new Cuchara();
 }
 
-void Catapulta::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz)
+void Catapulta::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccionado, bool seleccionable)
 {
 
    //Catapulta
@@ -48,14 +48,14 @@ void Catapulta::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool pu
          glPushMatrix();
          {
             glScalef(50, 5, 50);
-            base->draw(modo, ajedrez, alambre, solido, puntos, luz);
+            base->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
          }
          glPopMatrix();
          //elevador
          glPushMatrix();
          {
             glScalef(4, alturaBase, 4);
-            elevador->draw(modo, ajedrez, alambre, solido, puntos, luz);
+            elevador->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
          }
          glPopMatrix();
       }
@@ -68,7 +68,7 @@ void Catapulta::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool pu
          glPushMatrix();
          {
             glScalef(40, 2, 40);
-            baseRotatoria->draw(modo, ajedrez, alambre, solido, puntos, luz);
+            baseRotatoria->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
          }
          glPopMatrix();
 
@@ -77,14 +77,14 @@ void Catapulta::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool pu
          {
             glPushMatrix();
             {
-               estructura->draw(modo, ajedrez, alambre, solido, puntos, luz);
+               estructura->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
             }
             glPopMatrix();
             //Cuchara
             glPushMatrix();
             {
                glTranslatef(-20, 50, -20);
-               cuchara->draw(modo, ajedrez, alambre, solido, puntos, luz);
+               cuchara->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
             }
             glPopMatrix();
          }
@@ -149,4 +149,15 @@ void Catapulta::modificarVelocidad(float incremento)
    modificarVelocidadAnimacionAltura(incremento);
    modificarVelocidadAnimacionCuchara(incremento);
    modificarVelocidadAnimacionRotacion(incremento);
+}
+
+void Catapulta::asignarColoresSeleccion(Tupla3f c)
+{
+   base->asignarColoresSeleccion(c);
+   elevador->asignarColoresSeleccion(c);
+   baseRotatoria->asignarColoresSeleccion(c);
+
+   estructura->asignarColoresSeleccion(c);
+   cuchara->asignarColoresSeleccion(c);
+
 }

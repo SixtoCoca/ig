@@ -47,14 +47,20 @@ Escena::Escena()
    // .......completar: ...
    modoDibujo = false;
    cubo = new Cubo(50);
+   Tupla3f c1 = {0.5f, 0, 0.5f};
+   cubo->asignarColoresSeleccion(c1);
    cubo->setMaterial(oro);
    cubo->setTextura("texturas/madera.jpg");
    catapulta = new Catapulta();
+   Tupla3f c2 = {0.5f, 0.5f, 0};
+   catapulta->asignarColoresSeleccion(c2);
 
    tetraedro = new Tetraedro(100);
    tetraedro->setMaterial(oro);
 
    esfera = new Esfera(20, 20, 10);
+   Tupla3f c3 = {0, 0.5f, 0.5f};
+   esfera->asignarColoresSeleccion(c3);
    esfera->setMaterial(cobre);
 
    suelo = new Cuadro(1);
@@ -112,7 +118,6 @@ void Escena::inicializar(int UI_window_width, int UI_window_height)
       camaras[i]->nuevoBottom(-UI_window_height / 10);
    }
 
-   std::cout << "cual es la activa " << cam << std::endl;
    change_projection();
    change_observer();
    glViewport(0, 0, UI_window_width, UI_window_height);
@@ -132,14 +137,17 @@ void Escena::pintarObjetos()
       glTranslatef(-1000, 0, 1000);
       glRotatef(-90, 1, 0, 0);
       glScalef(2000, 2000, 2000);
-      suelo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      suelo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz, false, false);
       glPopMatrix();
    }
    if (cubo != nullptr && bCubo)
    {
       glPushMatrix();
       glTranslatef(-100, 25, 0);
-      cubo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      if (visualizacionMenu == LIMPIA)
+         cubo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz, false, false);
+      else
+         cubo->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz, false, true);
 
       glPopMatrix();
    }
@@ -148,7 +156,7 @@ void Escena::pintarObjetos()
       glPushMatrix();
       glTranslatef(150, 40, 0);
       glScalef(30, 30, 30);
-      objrevolucion->pintarConTapas(modoDibujo, ajedrez, alambre, solido, puntos, luz, tapas);
+      objrevolucion->pintarConTapas(modoDibujo, ajedrez, alambre, solido, puntos, luz, tapas, false);
       glPopMatrix();
    }
    if (objply != nullptr && bHormiga)
@@ -156,7 +164,7 @@ void Escena::pintarObjetos()
       glPushMatrix();
       glTranslatef(125, 40, -130);
       glScalef(4, 4, 4);
-      objply->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      objply->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz, false, false);
       objply->setMaterial(cobre);
       glPopMatrix();
    }
@@ -164,7 +172,7 @@ void Escena::pintarObjetos()
    {
       glPushMatrix();
       glTranslatef(0, 40, -200);
-      tetraedro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      tetraedro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz, false, false);
       glPopMatrix();
    }
    if (esfera != nullptr && bEsfera)
@@ -174,7 +182,12 @@ void Escena::pintarObjetos()
       glTranslatef(50, 40, -70);
 
       glScalef(3, 3, 3);
-      esfera->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      if (visualizacionMenu == LIMPIA)
+         esfera->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz, false, false);
+
+      else
+         esfera->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz, false, true);
+
       glPopMatrix();
    }
    if (cono != nullptr && bCono)
@@ -182,7 +195,7 @@ void Escena::pintarObjetos()
       glPushMatrix();
       glTranslatef(180, 0, -60);
       glScalef(5, 5, 5);
-      cono->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      cono->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz, false, false);
       glPopMatrix();
    }
    if (cilindro != nullptr && bCilindro)
@@ -190,13 +203,48 @@ void Escena::pintarObjetos()
       glPushMatrix();
       glTranslatef(-80, 0, -110);
       glScalef(5, 5, 5);
-      cilindro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      cilindro->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz, false, false);
       glPopMatrix();
    }
    if (catapulta != nullptr && bCatapulta)
    {
       glPushMatrix();
-      catapulta->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz);
+      if (visualizacionMenu == LIMPIA)
+         catapulta->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz, false, false);
+
+      else
+         catapulta->draw(modoDibujo, ajedrez, alambre, solido, puntos, luz, false, true);
+
+      glPopMatrix();
+   }
+}
+//**************************************************************************
+
+//**************************************************************************
+void Escena::pintarObjetosSeleccion()
+{
+   if (cubo != nullptr && bCubo)
+   {
+      glPushMatrix();
+      glTranslatef(-100, 25, 0);
+      cubo->draw(modoDibujo, false, false, false, false, false, true, false);
+
+      glPopMatrix();
+   }
+   if (esfera != nullptr && bEsfera)
+   {
+
+      glPushMatrix();
+      glTranslatef(50, 40, -70);
+
+      glScalef(3, 3, 3);
+      esfera->draw(modoDibujo, false, false, false, false, false, true, false);
+      glPopMatrix();
+   }
+   if (catapulta != nullptr && bCatapulta)
+   {
+      glPushMatrix();
+      catapulta->draw(modoDibujo, false, false, false, false, false, true, false);
       glPopMatrix();
    }
 }
@@ -318,7 +366,7 @@ void Escena::menuInicial()
    cout << "\t - Pulsa D: Modo dibujado " << endl;
    cout << "\t - Pulsa A: Animación automática" << endl;
    cout << "\t - Pulsa M: Mover Manualmente los grados de libertad" << endl;
-   cout << "\t - Pulsa C: Para entrar en el menu de camara" << endl;
+   cout << "\t - Pulsa C: Menu de camaras" << endl;
 }
 //**************************************************************************
 
@@ -720,18 +768,21 @@ void Escena::teclaEspecial(int Tecla1, int x, int y)
       break;
    case GLUT_KEY_RIGHT:
       camaras[cam]->rotarYExaminar(1 * (M_PI / 180));
+
       break;
    case GLUT_KEY_UP:
       camaras[cam]->rotarXExaminar(-1 * (M_PI / 180));
+
       break;
    case GLUT_KEY_DOWN:
       camaras[cam]->rotarXExaminar(1 * (M_PI / 180));
+
       break;
    case GLUT_KEY_PAGE_UP:
-      camaras[cam]->zoom(0.8);
+      camaras[cam]->zoom(0.9);
       break;
    case GLUT_KEY_PAGE_DOWN:
-      camaras[cam]->zoom(1.2);
+      camaras[cam]->zoom(1.1);
       break;
    }
    change_projection();
@@ -792,4 +843,130 @@ void Escena::cambiaCamara(int n)
    cam = n;
    change_observer();
    change_projection();
+}
+
+//**************************************************************************
+// Funcion para controlar con el raton
+//***************************************************************************
+
+void Escena::clickRaton(int boton, int estado, int x, int y)
+{
+   xant = x;
+   yant = y;
+   switch (boton)
+   {
+   case GLUT_RIGHT_BUTTON:
+      if (estado == GLUT_DOWN)
+      {
+         if (camaras[cam]->getObjeto() == CAMNINGUNO)
+            estadoRaton = MOVIENDO_CAMARA_FIRSTPERSON;
+         else
+            estadoRaton = MOVIENDO_CAMARA_EXAMINAR;
+      }
+      else
+      {
+         estadoRaton = QUIETA;
+      }
+      break;
+   case GLUT_LEFT_BUTTON:
+      if (estado == GLUT_UP)
+      {
+         //se crea la escena "para seleccionar"
+         dibujaSeleccion();
+         //se lee el pixel del evento del raton
+         clickObjeto(x, y);
+      }
+      break;
+   case 3: //Rueda del raton hacia arriba
+      camaras[cam]->zoom(0.9);
+      break;
+   case 4: //Rueda del raton hacia abajo
+      camaras[cam]->zoom(1.1);
+      break;
+   }
+   change_projection();
+}
+
+void Escena::ratonMovido(int x, int y)
+{
+   if (estadoRaton == MOVIENDO_CAMARA_EXAMINAR)
+   {
+      camaras[cam]->girarExaminar(x - xant, y - yant);
+      xant = x;
+      yant = y;
+   }
+   else if (estadoRaton == MOVIENDO_CAMARA_FIRSTPERSON)
+   {
+      camaras[cam]->girarFirstPerson(x - xant, y - yant);
+      xant = x;
+      yant = y;
+   }
+}
+
+void Escena::dibujaSeleccion()
+{
+   //Desactivar el degradado, luego se vuelve a reactivar
+   glDisable(GL_DITHER);
+   glDisable(GL_LIGHTING);
+   glDisable(GL_TEXTURE);
+
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Limpiar la pantalla
+   glPolygonMode(GL_FRONT, GL_FILL);
+
+   change_observer();
+
+   pintarObjetosSeleccion();
+
+   glEnable(GL_DITHER);
+   glEnable(GL_LIGHTING);
+   glEnable(GL_TEXTURE);
+}
+
+//process pick
+void Escena::clickObjeto(int x, int y)
+{
+   glDisable(GL_DITHER);
+   glDisable(GL_LIGHTING);
+   glDisable(GL_TEXTURE);
+
+   GLint viewport[4];
+   GLubyte pixel[3];
+
+   glGetIntegerv(GL_VIEWPORT, viewport);
+
+   glReadPixels(x, viewport[3] - y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, (void *)pixel);
+
+   Tupla3i pixelClickado = {pixel[0], pixel[1], pixel[2]};
+
+   std::cout << "prueba " << pixelClickado[0] << " " << pixelClickado[1] << " " << pixelClickado[2] << " xx" << std::endl;
+
+   Tupla3i cubo = {127, 0, 127};
+   Tupla3i catapulta = {127, 127, 0};
+   Tupla3i esfera = {0, 127, 127};
+
+   if (pixelClickado[0] == cubo[0] && pixelClickado[1] == cubo[1] && pixelClickado[2] == cubo[2])
+   {
+      // camaras[cam]->mover
+      std::cout << " esto es el cubo bro " << std::endl;
+      camaras[cam]->setObjeto(CAMCUBO);
+      camaras[cam]->setAt(-100,25,0);
+   }
+   else if (pixelClickado[0] == catapulta[0] && pixelClickado[1] == catapulta[1] && pixelClickado[2] == catapulta[2])
+   {
+      std::cout <<" esto es la catapulta bro " << std::endl;
+      camaras[cam]->setObjeto(CAMCATAPULTA);
+      camaras[cam]->setAt(0,50,0);
+   }
+   else if (pixelClickado[0] == esfera[0] && pixelClickado[1] == esfera[1] && pixelClickado[2] == esfera[2])
+   {
+      camaras[cam]->setObjeto(CAMESFERA);
+      std::cout <<" esto es la esfera bro " << std::endl;
+      camaras[cam]->setAt(50,40,-70);
+   }else{
+      camaras[cam]->setObjeto(CAMNINGUNO);
+
+   }
+   glEnable(GL_DITHER);
+   glEnable(GL_LIGHTING);
+   glEnable(GL_TEXTURE);
 }

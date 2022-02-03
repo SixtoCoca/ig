@@ -9,7 +9,7 @@
 Cuchara::Cuchara()
 {
    rotacionX = 0;
-   velocidad=1.0f;
+   velocidad = 1.0f;
    ejeRotacion = new Cilindro(6, 100, 40, 3, EJEX);
    mastil = new Cilindro(6, 100, 100, 3, EJEZ);
    contraPeso = new Cubo(1);
@@ -29,7 +29,7 @@ Cuchara::Cuchara()
    ejeRotacion->setMaterial(jade);
 }
 
-void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz)
+void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccionado, bool seleccionable)
 {
    //Cuchara
 
@@ -38,7 +38,7 @@ void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool punt
       glRotatef(rotacionX, 1.0f, 0.0f, 0.0f);
       glPushMatrix();
       {
-         ejeRotacion->draw(modo, ajedrez, alambre, solido, puntos, luz);
+         ejeRotacion->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
       }
       glPopMatrix();
 
@@ -51,7 +51,7 @@ void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool punt
          {
             glTranslatef(20, 0, -25);
 
-            mastil->draw(modo, ajedrez, alambre, solido, puntos, luz);
+            mastil->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
          }
          glPopMatrix();
          //contrapeso
@@ -60,7 +60,7 @@ void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool punt
             glTranslatef(20, 0, -25);
             glScalef(20, 20, 20);
 
-            contraPeso->draw(modo, ajedrez, alambre, solido, puntos, luz);
+            contraPeso->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
          }
          glPopMatrix();
          //cuchara
@@ -69,7 +69,7 @@ void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool punt
             glTranslatef(20, 0, 80);
             glScalef(3, 3, 3);
 
-            cuchara->draw(modo, ajedrez, alambre, solido, puntos, luz);
+            cuchara->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
          }
          glPopMatrix();
       }
@@ -101,4 +101,12 @@ void Cuchara::animar()
 void Cuchara::modificarVelocidadAnimacion(float incremento)
 {
    velocidad = velocidad * incremento;
+}
+
+void Cuchara::asignarColoresSeleccion(Tupla3f c)
+{
+   contraPeso->asignarColoresSeleccion(c);
+   mastil->asignarColoresSeleccion(c);
+   cuchara->asignarColoresSeleccion(c);
+   ejeRotacion->asignarColoresSeleccion(c);
 }

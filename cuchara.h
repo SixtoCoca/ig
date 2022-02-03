@@ -17,8 +17,7 @@
 
 // *****************************************************************************
 // Objeto jerarquico de la práctica, la cuchara de la catapulta
-// 
-
+//
 
 class Cuchara
 {
@@ -28,12 +27,14 @@ private:
    Cilindro *ejeRotacion = nullptr, *mastil = nullptr;
    Cubo *contraPeso = nullptr;
    Esfera *cuchara = nullptr;
+
 public:
    Cuchara();
-   void draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz);
+   void draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccionado, bool seleccionable);
    void rotacion(float angulo);
    void animar();
    void modificarVelocidadAnimacion(float incremento);
-}; 
+   void asignarColoresSeleccion(Tupla3f c);
+};
 
 #endif

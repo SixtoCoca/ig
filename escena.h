@@ -30,6 +30,7 @@ typedef enum
     ANIMACION,
     CAMARAS
 } menu;
+
 typedef enum
 {
     NINGUNO,
@@ -55,6 +56,13 @@ typedef enum
     LUZ,
     LIMPIA
 } visualizacion;
+
+typedef enum
+{
+    MOVIENDO_CAMARA_FIRSTPERSON,
+    MOVIENDO_CAMARA_EXAMINAR,
+    QUIETA
+} raton;
 class Escena
 {
 
@@ -78,6 +86,9 @@ private:
     menu modoMenu = NADA;
     objeto objetoMenu;
     dibujo dibujoMenu = DIFERIDO;
+    raton estadoRaton = QUIETA;
+
+    int xant = 0, yant = 0;
     visualizacion visualizacionMenu = SOLIDO;
     bool modoDibujo;                            // Inmediato o diferido
     bool ajedrez, solido, puntos, alambre, luz; //modo de visualización
@@ -117,20 +128,26 @@ private:
     Camara *camaras[3];
     int cam;
 
-
 public:
     Escena();
     void inicializar(int UI_window_width, int UI_window_height);
     void redimensionar(int newWidth, int newHeight);
     void menuInicial();
     void pintarObjetos();
+    void pintarObjetosSeleccion();
     void animacion();
     // Dibujar
     void dibujar();
     void cambiaCamara(int n);
 
+    // gestion de camaras
+    void clickRaton(int boton, int estado, int x, int y);
+    void ratonMovido(int x, int y);
     // Interacción con la escena
     bool teclaPulsada(unsigned char Tecla1, int x, int y);
     void teclaEspecial(int Tecla1, int x, int y);
+    // Para clickar en las figuras
+    void dibujaSeleccion();
+    void clickObjeto(int x, int y);
 };
 #endif

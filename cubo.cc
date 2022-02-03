@@ -30,6 +30,8 @@ Cubo::Cubo(float lado)
    };
 
    asignarColores();
+
    calcular_normales();
+
 }
 

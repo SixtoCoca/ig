@@ -23,15 +23,15 @@ class Malla3D
 {
 public:
    // dibuja el objeto en modo inmediato
-   void draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool puntos, bool luz);
+   void draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccion, bool seleccionable);
 
    // dibuja el objeto en modo diferido (usando VBOs)
-   void draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool puntos, bool luz);
+   void draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccion, bool seleccionable);
 
    // función que redibuja el objeto
    // está función llama a 'draw_ModoInmediato' (modo inmediato)
    // o bien a 'draw_ModoDiferido' (modo diferido, VBOs)
-   void draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz);
+   void draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccion, bool seleccionable);
 
    // función para dibujar en modo puntos
    void modoPuntos();
@@ -45,9 +45,14 @@ public:
    // función para dibujar en modo ajedrez
    void modoAjedrez();
 
+   void modoSeleccion();
+   void modoSeleccionable();
+
    void setMaterial(Material *mat);
 
    void setTextura(const std::string &archivo);
+   void asignarColoresSeleccion(Tupla3f c); //para asignarlos colores de la seleccion
+
 protected:
    void calcular_normales(); // calcula tabla de normales de vértices (práctica 3)
    void asignarColores();    //para asignarlos colores en los constructores de los objetos
@@ -55,7 +60,7 @@ protected:
    std::vector<Tupla3f> v;  // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
    std::vector<Tupla3i> f;  // una terna de 3 enteros por cada cara o triángulo
    std::vector<Tupla3f> nv; // vector de normales
-   std::vector<Tupla3f> color, colorAlambre, colorPuntos;
+   std::vector<Tupla3f> color, colorAlambre, colorPuntos, colorSeleccion, colorSeleccionable;
    std::vector<Tupla3i> caraPar, caraImpar;   //Contendran las caras pares e impares
    std::vector<Tupla3f> colorPar, colorImpar; //Contendran los colores de las caras pares e impares
    Material *m;

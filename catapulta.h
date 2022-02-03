@@ -37,7 +37,7 @@ private:
 
 public:
    Catapulta();
-   void draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz);
+   void draw(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccionado, bool seleccionable);
 
    void rotacionCuchara(float angulo);
    void rotacionCatapulta(float angulo);
@@ -47,6 +47,7 @@ public:
    void modificarVelocidadAnimacionAltura(float incremento);
    void modificarVelocidadAnimacionCuchara(float incremento);
    void modificarVelocidad(float incremento);
+   void asignarColoresSeleccion(Tupla3f c);
 };
 
 #endif
