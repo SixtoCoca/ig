@@ -26,7 +26,7 @@ protected:
 
 public:
    //inicializar la fuente de luz
-   LuzDireccional(const Tupla3f &orientacion,GLenum idLuzOpenGL, Tupla4f colorAmbiente, Tupla4f colorEspecular, Tupla4f colorDifuso);
+   LuzDireccional(const Tupla2f &direccion,GLenum idLuzOpenGL, Tupla4f colorAmbiente, Tupla4f colorEspecular, Tupla4f colorDifuso);
 
    //cambiar ángulo
    void variarAnguloAlfa(float incremento);

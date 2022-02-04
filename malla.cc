@@ -11,7 +11,7 @@
 
 void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccion, bool seleccionable)
 {
-
+   int tam = f.size() * 3;
    // visualizar la malla usando glDrawElements,
    // habilitar uso de un array de vértices
    glEnableClientState(GL_VERTEX_ARRAY);
@@ -27,11 +27,15 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool p
       glEnableClientState(GL_TEXTURE_COORD_ARRAY);
       glTexCoordPointer(2, GL_FLOAT, 0, ct.data());
    }
-
+   if (seleccionable)
+   {
+      modoSeleccionable();
+      glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, f.data());
+   }
    if (seleccion)
    {
       modoSeleccion();
-      glDrawElements(GL_TRIANGLES, f.size() * 3, GL_UNSIGNED_INT, f.data());
+      glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, f.data());
    }
    else if (luz)
    {
@@ -44,7 +48,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool p
       glNormalPointer(GL_FLOAT, 0, nv.data());
       glPolygonMode(GL_FRONT, GL_FILL);
       glShadeModel(GL_SMOOTH);
-      glDrawElements(GL_TRIANGLES, f.size() * 3, GL_UNSIGNED_INT, f.data());
+      glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, f.data());
 
       glDisable(GL_NORMALIZE);
       //Desactivo el array de normales
@@ -67,17 +71,17 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool p
          if (puntos)
          {
             modoPuntos();
-            glDrawElements(GL_TRIANGLES, f.size() * 3, GL_UNSIGNED_INT, f.data());
+            glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, f.data());
          }
          if (alambre)
          {
             modoAlambre();
-            glDrawElements(GL_TRIANGLES, f.size() * 3, GL_UNSIGNED_INT, f.data());
+            glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, f.data());
          }
          if (solido)
          {
             modoSolido();
-            glDrawElements(GL_TRIANGLES, f.size() * 3, GL_UNSIGNED_INT, f.data());
+            glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, f.data());
          }
       }
    }
@@ -96,6 +100,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, bool alambre, bool solido, bool p
 
 void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool seleccion, bool seleccionable)
 {
+   int tam = f.size() * 3;
    // (la primera vez, se deben crear los VBOs y guardar sus identificadores en el objeto)
    if (id_vbo_ver == 0)
    {
@@ -103,7 +108,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
    }
    if (id_vbo_tri == 0)
    {
-      id_vbo_tri = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, 3 * f.size() * sizeof(unsigned int), f.data());
+      id_vbo_tri = CrearVBO(GL_ELEMENT_ARRAY_BUFFER, tam * sizeof(unsigned int), f.data());
    }
    if (id_vbo_color == 0)
    {
@@ -137,14 +142,14 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri); //activar VBO de triángulos
 
       modoSeleccionable();
-      glDrawElements(GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, 0);
+      glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, 0);
    }
    if (seleccion)
    {
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri); //activar VBO de triángulos
 
       modoSeleccion();
-      glDrawElements(GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, 0);
+      glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, 0);
    }
    else if (luz)
    {
@@ -164,7 +169,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
       glShadeModel(GL_SMOOTH);
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri); //activar VBO de triángulos
 
-      glDrawElements(GL_TRIANGLES, f.size() * 3, GL_UNSIGNED_INT, 0);
+      glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, 0);
       glDisable(GL_NORMALIZE);
       //Desactivo el array de normales
       glDisableClientState(GL_NORMAL_ARRAY);
@@ -214,17 +219,17 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, bool alambre, bool solido, bool pu
          if (puntos)
          {
             modoPuntos();
-            glDrawElements(GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, 0);
          }
          if (alambre)
          {
             modoAlambre();
-            glDrawElements(GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, 0);
          }
          if (solido)
          {
             modoSolido();
-            glDrawElements(GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, tam, GL_UNSIGNED_INT, 0);
          }
       }
    }

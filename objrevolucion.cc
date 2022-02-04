@@ -323,25 +323,17 @@ void ObjRevolucion::crearTapaSuperior(int num_instancias, bool tapa_sup)
    }
 }
 
-void ObjRevolucion::pintarConTapas(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool tapas,bool seleccionado)
+void ObjRevolucion::pintarConTapas(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool t,bool seleccionado)
 {
-   int tamOriginal = f.size();
-   int tamOriginalCaraPar = caraPar.size();
-   int tamOriginalCaraImpar = caraImpar.size();
-   if (tapas)
+   if (t)
    {
       draw(modo, ajedrez, alambre, solido, puntos, luz,seleccionado,false);
    }
    else
    {
-      f.resize(f.size() - 2 * numInstancias);
-      caraImpar.resize(caraImpar.size() - numInstancias);
-      caraPar.resize(caraPar.size() - numInstancias);
+      tam = tam - 2 * numInstancias;
       draw(modo, ajedrez, alambre, solido, puntos, luz,seleccionado,false);
    }
-   f.resize(tamOriginal);
-   caraImpar.resize(tamOriginalCaraImpar);
-   caraPar.resize(tamOriginalCaraPar);
 }
 
 // void ObjRevolucion::asignarPuntosTextura()

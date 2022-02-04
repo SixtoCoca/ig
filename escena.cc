@@ -88,7 +88,7 @@ Escena::Escena()
 
    luzPosicional = new LuzPosicional({200, 150, 200}, GL_LIGHT1, {0.6, 0.0, 0.0, 1.0}, {0.6, 0.0, 0.0, 1.0}, {0.6, 0.0, 0.0, 1.0});
 
-   luzDireccional = new LuzDireccional({10, 10, 4}, GL_LIGHT2, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
+   luzDireccional = new LuzDireccional({10, 10}, GL_LIGHT2, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
 
    // camaras
    camaras[0] = new Camara({0, 100, 2000}, {0, 0, 0}, {0, 1, 0}, PERSPECTIVA, 100, 20000);
@@ -938,7 +938,7 @@ void Escena::clickObjeto(int x, int y)
 
    Tupla3i pixelClickado = {pixel[0], pixel[1], pixel[2]};
 
-   std::cout << "prueba " << pixelClickado[0] << " " << pixelClickado[1] << " " << pixelClickado[2] << " xx" << std::endl;
+   // std::cout << "prueba " << pixelClickado[0] << " " << pixelClickado[1] << " " << pixelClickado[2] << " xx" << std::endl;
 
    Tupla3i cubo = {127, 0, 127};
    Tupla3i catapulta = {127, 127, 0};
@@ -947,20 +947,20 @@ void Escena::clickObjeto(int x, int y)
    if (pixelClickado[0] == cubo[0] && pixelClickado[1] == cubo[1] && pixelClickado[2] == cubo[2])
    {
       // camaras[cam]->mover
-      std::cout << " esto es el cubo bro " << std::endl;
+      // std::cout << " esto es el cubo " << std::endl;
       camaras[cam]->setObjeto(CAMCUBO);
       camaras[cam]->setAt(-100,25,0);
    }
    else if (pixelClickado[0] == catapulta[0] && pixelClickado[1] == catapulta[1] && pixelClickado[2] == catapulta[2])
    {
-      std::cout <<" esto es la catapulta bro " << std::endl;
+      // std::cout <<" esto es la catapulta " << std::endl;
       camaras[cam]->setObjeto(CAMCATAPULTA);
       camaras[cam]->setAt(0,50,0);
    }
    else if (pixelClickado[0] == esfera[0] && pixelClickado[1] == esfera[1] && pixelClickado[2] == esfera[2])
    {
       camaras[cam]->setObjeto(CAMESFERA);
-      std::cout <<" esto es la esfera bro " << std::endl;
+      // std::cout <<" esto es la esfera " << std::endl;
       camaras[cam]->setAt(50,40,-70);
    }else{
       camaras[cam]->setObjeto(CAMNINGUNO);

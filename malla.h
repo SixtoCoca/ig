@@ -65,6 +65,8 @@ protected:
    std::vector<Tupla3f> colorPar, colorImpar; //Contendran los colores de las caras pares e impares
    Material *m;
 
+   int tam;
+   int instancias;
    Textura *t = nullptr;
    std::vector<Tupla2f> ct;
    GLuint id_vbo_ver = 0, id_vbo_tri = 0, id_vbo_color = 0, id_vbo_color_par = 0, id_vbo_color_impar = 0, id_vbo_tri_par = 0, id_vbo_tri_impar = 0, id_vbo_normales = 0;

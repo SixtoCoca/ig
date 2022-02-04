@@ -40,25 +40,25 @@ void Estructura::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool p
          glPushMatrix();
          {
             glTranslatef(20, 0, -20);
-            base1->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            base1->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
          glPushMatrix();
          {
             glTranslatef(-20, 0, -20);
-            base1->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            base1->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
          glPushMatrix();
          {
             glTranslatef(-25, 0, -20);
-            base2->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            base2->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
          glPushMatrix();
          {
             glTranslatef(-25, 0, 20);
-            base2->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            base2->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
       }
@@ -70,13 +70,13 @@ void Estructura::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool p
          glPushMatrix();
          {
             glTranslatef(20, 0, -20);
-            poste->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            poste->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
          glPushMatrix();
          {
             glTranslatef(-20, 0, -20);
-            poste->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            poste->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
       }
@@ -85,20 +85,22 @@ void Estructura::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool p
       //Postes Diagonales
       glPushMatrix();
       {
+         glRotatef(-45.0f, 1.0f, 0.0f, 0.0f);
+
          glPushMatrix();
          {
-            glTranslatef(20, 0, 30);
-            glRotatef(-45.0f, 1.0f, 0.0f, 0.0f);
+            glTranslatef(20, -20, 30);
+            // glRotatef(-45.0f, 1.0f, 0.0f, 0.0f);
 
-            posteDiagonal->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            posteDiagonal->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
          glPushMatrix();
          {
-            glTranslatef(-20, 0, 30);
-            glRotatef(-45.0f, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-20, -20, 30);
+            // glRotatef(-45.0f, 1.0f, 0.0f, 0.0f);
 
-            posteDiagonal->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            posteDiagonal->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
       }

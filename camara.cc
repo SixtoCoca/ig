@@ -109,7 +109,7 @@ void Camara::girarFirstPerson(float x, float y)
 
 void Camara::girarExaminar(float x, float y)
 {
-   rotarXExaminar(abs(y) * (M_PI / 180));
+   rotarXExaminar(y * (M_PI / 180));
    rotarYExaminar(x * (M_PI / 180));
 }
 

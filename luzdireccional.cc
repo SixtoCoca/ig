@@ -6,16 +6,16 @@
 //
 // *****************************************************************************
 
-LuzDireccional::LuzDireccional(const Tupla3f &direccion, GLenum idLuzOpenGL, Tupla4f colorAmbiente, Tupla4f colorEspecular, Tupla4f colorDifuso)
+LuzDireccional::LuzDireccional(const Tupla2f &direccion, GLenum idLuzOpenGL, Tupla4f colorAmbiente, Tupla4f colorEspecular, Tupla4f colorDifuso)
 {
    id = idLuzOpenGL;
    posicion[0] = direccion[0];
    posicion[1] = direccion[1];
-   posicion[2] = direccion[2];
+   posicion[2] = 0.0;
    posicion[3] = 0.0;
-   origen = {direccion[0], direccion[1], direccion[2],0};
+   origen = {direccion[0], direccion[1], 0, 0};
 
-   alfa = abs(atan2f(direccion(0), direccion(2)));
+   alfa = abs(atan2f(direccion(0), 0));
    beta = asin(direccion(1) / sqrt(direccion.lengthSq()));
 
    this->colorAmbiente = colorAmbiente;
@@ -26,25 +26,34 @@ LuzDireccional::LuzDireccional(const Tupla3f &direccion, GLenum idLuzOpenGL, Tup
 void LuzDireccional::variarAnguloAlfa(float incremento)
 {
    alfa = alfa + incremento;
-   if (alfa > M_PI*2.0 ){
-      alfa -= M_PI*2.0;
-
-   } else if (alfa < 0){
-      alfa += M_PI*2.0;
+   if (alfa > M_PI * 2.0)
+   {
+      alfa -= M_PI * 2.0;
    }
-   std::cout << alfa*180/M_PI << "º <--- angulo alfa" << std::endl;
-   
+   else if (alfa < 0)
+   {
+      alfa += M_PI * 2.0;
+   }
+   std::cout << alfa * 180 / M_PI << "º <--- angulo alfa" << std::endl;
+
    posicion[0] = sin(alfa) * cos(beta) * sqrt(origen.lengthSq());
    posicion[1] = sin(beta) * sqrt(origen.lengthSq());
-   posicion[2] = cos(alfa) * cos(beta) * sqrt(origen.lengthSq());
 }
 void LuzDireccional::variarAnguloBeta(float incremento)
 {
+   beta = beta + incremento;
+   if (beta > M_PI * 2.0)
+   {
+      beta -= M_PI * 2.0;
+   }
+   else if (beta < 0)
+   {
+      beta += M_PI * 2.0;
+   }
    beta = (int)(beta + incremento) % 360;
 
-   std::cout << beta << "<--- angulo beta" << std::endl;
+   std::cout << beta * 180 / M_PI << "<--- angulo beta" << std::endl;
 
    posicion[0] = sin(alfa) * cos(beta) * sqrt(origen.lengthSq());
    posicion[1] = sin(beta) * sqrt(origen.lengthSq());
-   posicion[2] = cos(beta) * cos(alfa) * sqrt(origen.lengthSq());
 }
