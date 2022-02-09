@@ -35,6 +35,8 @@ public:
    void animar();
    void modificarVelocidadAnimacion(float incremento);
    void asignarColoresSeleccion(Tupla3f c);
+   void asignarColoresPuntosSeleccionables();
+   void asignarColoresPuntosSeleccionados();
 };
 
 #endif

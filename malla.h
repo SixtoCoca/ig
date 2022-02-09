@@ -47,11 +47,14 @@ public:
 
    void modoSeleccion();
    void modoSeleccionable();
+   void modoSeleccionado();
 
    void setMaterial(Material *mat);
 
    void setTextura(const std::string &archivo);
    void asignarColoresSeleccion(Tupla3f c); //para asignarlos colores de la seleccion
+   void asignarColoresPuntosSeleccionables(); //para asignarlos colores de la seleccion
+   void asignarColoresPuntosSeleccionados(); //para asignarlos colores de la seleccion
 
 protected:
    void calcular_normales(); // calcula tabla de normales de vértices (práctica 3)

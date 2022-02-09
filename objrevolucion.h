@@ -41,7 +41,7 @@ public:
 protected:
     std::vector<Tupla3f> perfil;
     eje ejeRevolucion = EJEY;
-    int numInstancias;
+    int numInstancias,tamSinTapas,tamConTapas;
     Tupla3f verticeTapaSuperior = {1, 1, 1}; //Lo inicializo a 1,1,1 porque este nunca puede ser el vertice de una tapa
     Tupla3f verticeTapaInferior = {1, 1, 1}; // que venga del perfil
     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, bool tapa_sup, bool tapa_inf);

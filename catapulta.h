@@ -48,6 +48,8 @@ public:
    void modificarVelocidadAnimacionCuchara(float incremento);
    void modificarVelocidad(float incremento);
    void asignarColoresSeleccion(Tupla3f c);
+   void asignarColoresPuntosSeleccionables();
+   void asignarColoresPuntosSeleccionados();
 };
 
 #endif

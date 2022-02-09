@@ -64,7 +64,7 @@ Escena::Escena()
    esfera->setMaterial(cobre);
 
    suelo = new Cuadro(1);
-   suelo->setTextura("texturas/cesped.jpg");
+   suelo->setTextura("texturas/text-lata-1.jpg");
    suelo->setMaterial(blanco);
 
    cono = new Cono(10, 50, 10, 5, EJEY);
@@ -88,7 +88,7 @@ Escena::Escena()
 
    luzPosicional = new LuzPosicional({200, 150, 200}, GL_LIGHT1, {0.6, 0.0, 0.0, 1.0}, {0.6, 0.0, 0.0, 1.0}, {0.6, 0.0, 0.0, 1.0});
 
-   luzDireccional = new LuzDireccional({10, 10}, GL_LIGHT2, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
+   luzDireccional = new LuzDireccional({0.6, 300}, GL_LIGHT2, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
 
    // camaras
    camaras[0] = new Camara({0, 100, 2000}, {0, 0, 0}, {0, 1, 0}, PERSPECTIVA, 100, 20000);
@@ -940,31 +940,46 @@ void Escena::clickObjeto(int x, int y)
 
    // std::cout << "prueba " << pixelClickado[0] << " " << pixelClickado[1] << " " << pixelClickado[2] << " xx" << std::endl;
 
-   Tupla3i cubo = {127, 0, 127};
-   Tupla3i catapulta = {127, 127, 0};
-   Tupla3i esfera = {0, 127, 127};
+   Tupla3i colorCubo = {127, 0, 127};
+   Tupla3i colorCatapulta = {127, 127, 0};
+   Tupla3i colorEsfera = {0, 127, 127};
 
-   if (pixelClickado[0] == cubo[0] && pixelClickado[1] == cubo[1] && pixelClickado[2] == cubo[2])
+   if (pixelClickado[0] == colorCubo[0] && pixelClickado[1] == colorCubo[1] && pixelClickado[2] == colorCubo[2])
    {
-      // camaras[cam]->mover
       // std::cout << " esto es el cubo " << std::endl;
       camaras[cam]->setObjeto(CAMCUBO);
-      camaras[cam]->setAt(-100,25,0);
+      camaras[cam]->setAt(-100, 25, 0);
+      cubo->asignarColoresPuntosSeleccionados();
+
+      catapulta->asignarColoresPuntosSeleccionables();
+      esfera->asignarColoresPuntosSeleccionables();
    }
-   else if (pixelClickado[0] == catapulta[0] && pixelClickado[1] == catapulta[1] && pixelClickado[2] == catapulta[2])
+   else if (pixelClickado[0] == colorCatapulta[0] && pixelClickado[1] == colorCatapulta[1] && pixelClickado[2] == colorCatapulta[2])
    {
       // std::cout <<" esto es la catapulta " << std::endl;
       camaras[cam]->setObjeto(CAMCATAPULTA);
-      camaras[cam]->setAt(0,50,0);
-   }
-   else if (pixelClickado[0] == esfera[0] && pixelClickado[1] == esfera[1] && pixelClickado[2] == esfera[2])
-   {
-      camaras[cam]->setObjeto(CAMESFERA);
-      // std::cout <<" esto es la esfera " << std::endl;
-      camaras[cam]->setAt(50,40,-70);
-   }else{
-      camaras[cam]->setObjeto(CAMNINGUNO);
+      camaras[cam]->setAt(0, 50, 0);
+      catapulta->asignarColoresPuntosSeleccionados();
 
+      cubo->asignarColoresPuntosSeleccionables();
+      esfera->asignarColoresPuntosSeleccionables();
+   }
+   else if (pixelClickado[0] == colorEsfera[0] && pixelClickado[1] == colorEsfera[1] && pixelClickado[2] == colorEsfera[2])
+   {
+      // std::cout <<" esto es la esfera " << std::endl;
+      camaras[cam]->setObjeto(CAMESFERA);
+      camaras[cam]->setAt(50, 40, -70);
+      esfera->asignarColoresPuntosSeleccionados();
+
+      cubo->asignarColoresPuntosSeleccionables();
+      catapulta->asignarColoresPuntosSeleccionables();
+   }
+   else
+   {
+      camaras[cam]->setObjeto(CAMNINGUNO);
+      cubo->asignarColoresPuntosSeleccionables();
+      catapulta->asignarColoresPuntosSeleccionables();
+      esfera->asignarColoresPuntosSeleccionables();
    }
    glEnable(GL_DITHER);
    glEnable(GL_LIGHTING);

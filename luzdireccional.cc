@@ -9,14 +9,14 @@
 LuzDireccional::LuzDireccional(const Tupla2f &direccion, GLenum idLuzOpenGL, Tupla4f colorAmbiente, Tupla4f colorEspecular, Tupla4f colorDifuso)
 {
    id = idLuzOpenGL;
-   posicion[0] = direccion[0];
-   posicion[1] = direccion[1];
-   posicion[2] = 0.0;
-   posicion[3] = 0.0;
-   origen = {direccion[0], direccion[1], 0, 0};
 
-   alfa = abs(atan2f(direccion(0), 0));
-   beta = asin(direccion(1) / sqrt(direccion.lengthSq()));
+   alfa = direccion[0];
+   beta = direccion[1];
+
+   posicion[0] = sin((alfa * M_PI) / 180.0);
+   posicion[1] = cos((alfa * M_PI) / 180.0) * (-sin((beta * M_PI) / 180.0));
+   posicion[2] = cos((alfa * M_PI) / 180.0) * cos((beta * M_PI) / 180.0);
+   posicion[3] = 0.0;
 
    this->colorAmbiente = colorAmbiente;
    this->colorEspecular = colorEspecular;
@@ -34,10 +34,10 @@ void LuzDireccional::variarAnguloAlfa(float incremento)
    {
       alfa += M_PI * 2.0;
    }
-   std::cout << alfa * 180 / M_PI << "º <--- angulo alfa" << std::endl;
+   std::cout << alfa *  180 / M_PI << "º <--- angulo alfa" << std::endl;
 
-   posicion[0] = sin(alfa) * cos(beta) * sqrt(origen.lengthSq());
-   posicion[1] = sin(beta) * sqrt(origen.lengthSq());
+   posicion[0] = sin(alfa) * cos(beta) * sqrt(posicion.lengthSq());
+   posicion[1] = sin(beta) * sqrt(posicion.lengthSq());
 }
 void LuzDireccional::variarAnguloBeta(float incremento)
 {
@@ -52,8 +52,8 @@ void LuzDireccional::variarAnguloBeta(float incremento)
    }
    beta = (int)(beta + incremento) % 360;
 
-   std::cout << beta * 180 / M_PI << "<--- angulo beta" << std::endl;
+   std::cout << beta * 180 / M_PI  << "<--- angulo beta" << std::endl;
 
-   posicion[0] = sin(alfa) * cos(beta) * sqrt(origen.lengthSq());
-   posicion[1] = sin(beta) * sqrt(origen.lengthSq());
+   posicion[0] = sin(alfa) * cos(beta) * sqrt(posicion.lengthSq());
+   posicion[1] = sin(beta) * sqrt(posicion.lengthSq());
 }

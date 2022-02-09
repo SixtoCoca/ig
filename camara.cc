@@ -16,10 +16,12 @@ void Camara::rotarXExaminar(float angulo)
 {
    //restamos at para poder modificar solo eye
    Tupla3f centro = eye - at;
+   float modulo = sqrt(centro.lengthSq());
 
    centro[1] = cos(angulo) * centro[1] - sin(angulo) * centro[2];
    centro[2] = sin(angulo) * centro[1] + cos(angulo) * centro[2];
-   centro = centro.normalized() * sqrt(centro.lengthSq()); //Centro Normalizado por el modulo
+   
+   centro = centro.normalized() * modulo; //Centro Normalizado por el modulo
 
    //añadimos el at que hemos quitador anteriormente
    eye = centro + at;
@@ -29,10 +31,12 @@ void Camara::rotarYExaminar(float angulo)
 {
    //restamos at para poder modificar solo eye
    Tupla3f centro = eye - at;
+   float modulo = sqrt(centro.lengthSq());
 
    centro[0] = cos(angulo) * centro[0] + sin(angulo) * centro[2];
    centro[2] = -sin(angulo) * centro[0] + cos(angulo) * centro[2];
-   centro = centro.normalized() * sqrt(centro.lengthSq()); //Centro Normalizado por el modulo
+   
+   centro = centro.normalized() * modulo; //Centro Normalizado por el modulo
 
    //añadimos el at que hemos quitador anteriormente
    eye = centro + at;
@@ -42,10 +46,13 @@ void Camara::rotarZExaminar(float angulo)
 {
    //restamos at para poder modificar solo eye
    Tupla3f centro = eye - at;
+   float modulo = sqrt(centro.lengthSq());
+
 
    centro[0] = cos(angulo) * centro[0] - sin(angulo) * centro[1];
    centro[1] = sin(angulo) * centro[0] + cos(angulo) * centro[1];
-   centro = centro.normalized() * sqrt(centro.lengthSq()); //Centro Normalizado por el modulo
+   
+   centro = centro.normalized() * modulo; //Centro Normalizado por el modulo
 
    //añadimos el at que hemos quitador anteriormente
    eye = centro + at;
@@ -55,10 +62,11 @@ void Camara::rotarXFirstPerson(float angulo)
 {
    //restamos eye para poder modificar solo at
    Tupla3f centro = at - eye;
+   float modulo = sqrt(centro.lengthSq());
 
    centro[1] = cos(angulo) * centro[1] - sin(angulo) * centro[2];
    centro[2] = sin(angulo) * centro[1] + cos(angulo) * centro[2];
-   centro = centro.normalized() * sqrt(centro.lengthSq()); //Centro Normalizado por el modulo
+   centro = centro.normalized() * modulo; //Centro Normalizado por el modulo
 
    //añadimos el eye que hemos quitador anteriormente
    at = centro + eye;
@@ -68,10 +76,11 @@ void Camara::rotarYFirstPerson(float angulo)
 {
    //restamos eye para poder modificar solo at
    Tupla3f centro = at - eye;
+   float modulo = sqrt(centro.lengthSq());
 
    centro[0] = cos(angulo) * centro[0] + sin(angulo) * centro[2];
    centro[2] = -sin(angulo) * centro[0] + cos(angulo) * centro[2];
-   centro = centro.normalized() * sqrt(centro.lengthSq()); //Centro Normalizado por el modulo
+   centro = centro.normalized() * modulo; //Centro Normalizado por el modulo
 
    //añadimos el eye que hemos quitador anteriormente
    at = centro + eye;
@@ -81,10 +90,11 @@ void Camara::rotarZFirstPerson(float angulo)
 {
    //restamos eye para poder modificar solo at
    Tupla3f centro = at - eye;
+   float modulo = sqrt(centro.lengthSq());
 
    centro[0] = cos(angulo) * centro[0] - sin(angulo) * centro[1];
    centro[1] = sin(angulo) * centro[0] + cos(angulo) * centro[1];
-   centro = centro.normalized() * sqrt(centro.lengthSq()); //Centro Normalizado por el modulo
+   centro = centro.normalized() * modulo; //Centro Normalizado por el modulo
 
    //añadimos el eye que hemos quitador anteriormente
    at = centro + eye;

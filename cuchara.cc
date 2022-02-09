@@ -38,7 +38,7 @@ void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool punt
       glRotatef(rotacionX, 1.0f, 0.0f, 0.0f);
       glPushMatrix();
       {
-         ejeRotacion->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+         ejeRotacion->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
       }
       glPopMatrix();
 
@@ -51,7 +51,7 @@ void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool punt
          {
             glTranslatef(20, 0, -25);
 
-            mastil->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            mastil->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
          //contrapeso
@@ -60,7 +60,7 @@ void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool punt
             glTranslatef(20, 0, -25);
             glScalef(20, 20, 20);
 
-            contraPeso->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            contraPeso->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
          //cuchara
@@ -69,7 +69,7 @@ void Cuchara::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool punt
             glTranslatef(20, 0, 80);
             glScalef(3, 3, 3);
 
-            cuchara->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            cuchara->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
       }
@@ -109,4 +109,19 @@ void Cuchara::asignarColoresSeleccion(Tupla3f c)
    mastil->asignarColoresSeleccion(c);
    cuchara->asignarColoresSeleccion(c);
    ejeRotacion->asignarColoresSeleccion(c);
+}
+
+void Cuchara::asignarColoresPuntosSeleccionables()
+{
+   contraPeso->asignarColoresPuntosSeleccionables();
+   mastil->asignarColoresPuntosSeleccionables();
+   cuchara->asignarColoresPuntosSeleccionables();
+   ejeRotacion->asignarColoresPuntosSeleccionables();
+}
+void Cuchara::asignarColoresPuntosSeleccionados()
+{
+   contraPeso->asignarColoresPuntosSeleccionados();
+   mastil->asignarColoresPuntosSeleccionados();
+   cuchara->asignarColoresPuntosSeleccionados();
+   ejeRotacion->asignarColoresPuntosSeleccionados();
 }

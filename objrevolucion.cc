@@ -19,8 +19,11 @@ ObjRevolucion::ObjRevolucion(const std::string &archivo, int num_instancias, boo
    ejeRevolucion = ejeR;
 
    crearMalla(perfil, num_instancias, tapa_sup, tapa_inf);
-
    asignarColores();
+
+   tamSinTapas = tam - (3 * numInstancias) * 2;
+   tamConTapas = tam;
+
    calcular_normales();
 }
 
@@ -34,6 +37,7 @@ ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, b
 
    crearMalla(perfil, num_instancias, tapa_sup, tapa_inf);
    asignarColores();
+   tamSinTapas = tam - (3 * numInstancias);
    calcular_normales();
 }
 
@@ -214,7 +218,8 @@ Tupla3f ObjRevolucion::tieneVerticeSuperior(std::vector<Tupla3f> p)
    switch (ejeRevolucion)
    {
    case EJEX:
-      if (p.back()[1] == 0 && p.back()[2] == 0)
+      // if (p.back()[1] == 0 && p.back()[2] == 0) //sqrt( pow(p.back()[0] - p.back()[0],2) + pow(p.back()[1] - 0,2) + pow(p.back()[2] - 0,2) )
+      if (sqrt(pow(p.back()[0] - p.back()[0], 2) + pow(p.back()[1] - 0, 2) + pow(p.back()[2] - 0, 2)) == 0.0)
       {
          return p.back();
       }
@@ -224,7 +229,8 @@ Tupla3f ObjRevolucion::tieneVerticeSuperior(std::vector<Tupla3f> p)
       }
       break;
    case EJEY:
-      if (p.back()[0] == 0 && p.back()[2] == 0)
+      // if (p.back()[0] == 0 && p.back()[2] == 0)
+      if (sqrt(pow(p.back()[0] - 0, 2) + pow(p.back()[1] - p.back()[1], 2) + pow(p.back()[2] - 0, 2)) == 0.0)
       {
          return p.back();
       }
@@ -234,7 +240,8 @@ Tupla3f ObjRevolucion::tieneVerticeSuperior(std::vector<Tupla3f> p)
       }
       break;
    case EJEZ:
-      if (p.back()[0] == 0 && p.back()[1] == 0)
+      // if (p.back()[0] == 0 && p.back()[1] == 0)
+      if (sqrt(pow(p.back()[0] - 0, 2) + pow(p.back()[1] - 0, 2) + pow(p.back()[2] - p.back()[2], 2)) == 0.0)
       {
          return p.back();
       }
@@ -271,7 +278,8 @@ Tupla3f ObjRevolucion::tieneVerticeInferior(std::vector<Tupla3f> p)
    switch (ejeRevolucion)
    {
    case EJEX:
-      if (p.front()[1] == 0 && p.front()[2] == 0)
+      // if (p.front()[1] == 0 && p.front()[2] == 0)
+      if (sqrt(pow(p.back()[0] - p.back()[0], 2) + pow(p.back()[1] - 0, 2) + pow(p.back()[2] - 0, 2)) == 0.0)
       {
          return p.front();
       }
@@ -281,7 +289,8 @@ Tupla3f ObjRevolucion::tieneVerticeInferior(std::vector<Tupla3f> p)
       }
       break;
    case EJEY:
-      if (p.front()[0] == 0 && p.front()[2] == 0)
+      // if (p.front()[0] == 0 && p.front()[2] == 0)
+      if (sqrt(pow(p.back()[0] - 0, 2) + pow(p.back()[1] - p.back()[1], 2) + pow(p.back()[2] - 0, 2)) == 0.0)
       {
          return p.front();
       }
@@ -291,7 +300,8 @@ Tupla3f ObjRevolucion::tieneVerticeInferior(std::vector<Tupla3f> p)
       }
       break;
    case EJEZ:
-      if (p.front()[0] == 0 && p.front()[1] == 0)
+      // if (p.front()[0] == 0 && p.front()[1] == 0)
+      if (sqrt(pow(p.back()[0] - 0, 2) + pow(p.back()[1] - 0, 2) + pow(p.back()[2] - p.back()[2], 2)) == 0.0)
       {
          return p.front();
       }
@@ -323,16 +333,17 @@ void ObjRevolucion::crearTapaSuperior(int num_instancias, bool tapa_sup)
    }
 }
 
-void ObjRevolucion::pintarConTapas(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool t,bool seleccionado)
+void ObjRevolucion::pintarConTapas(bool modo, bool ajedrez, bool alambre, bool solido, bool puntos, bool luz, bool t, bool seleccionado)
 {
    if (t)
    {
-      draw(modo, ajedrez, alambre, solido, puntos, luz,seleccionado,false);
+      tam = tamConTapas;
+      draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, false);
    }
    else
    {
-      tam = tam - 2 * numInstancias;
-      draw(modo, ajedrez, alambre, solido, puntos, luz,seleccionado,false);
+      tam = tamSinTapas;
+      draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, false);
    }
 }
 

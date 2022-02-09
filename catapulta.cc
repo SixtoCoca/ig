@@ -48,14 +48,14 @@ void Catapulta::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool pu
          glPushMatrix();
          {
             glScalef(50, 5, 50);
-            base->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            base->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
          //elevador
          glPushMatrix();
          {
             glScalef(4, alturaBase, 4);
-            elevador->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            elevador->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
       }
@@ -68,7 +68,7 @@ void Catapulta::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool pu
          glPushMatrix();
          {
             glScalef(40, 2, 40);
-            baseRotatoria->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+            baseRotatoria->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
          }
          glPopMatrix();
 
@@ -77,14 +77,14 @@ void Catapulta::draw(bool modo, bool ajedrez, bool alambre, bool solido, bool pu
          {
             glPushMatrix();
             {
-               estructura->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+               estructura->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
             }
             glPopMatrix();
             //Cuchara
             glPushMatrix();
             {
                glTranslatef(-20, 50, -20);
-               cuchara->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado,seleccionable);
+               cuchara->draw(modo, ajedrez, alambre, solido, puntos, luz, seleccionado, seleccionable);
             }
             glPopMatrix();
          }
@@ -159,5 +159,24 @@ void Catapulta::asignarColoresSeleccion(Tupla3f c)
 
    estructura->asignarColoresSeleccion(c);
    cuchara->asignarColoresSeleccion(c);
+}
 
+void Catapulta::asignarColoresPuntosSeleccionables()
+{
+   base->asignarColoresPuntosSeleccionables();
+   elevador->asignarColoresPuntosSeleccionables();
+   baseRotatoria->asignarColoresPuntosSeleccionables();
+
+   estructura->asignarColoresPuntosSeleccionables();
+   cuchara->asignarColoresPuntosSeleccionables();
+}
+
+void Catapulta::asignarColoresPuntosSeleccionados()
+{
+   base->asignarColoresPuntosSeleccionados();
+   elevador->asignarColoresPuntosSeleccionados();
+   baseRotatoria->asignarColoresPuntosSeleccionados();
+
+   estructura->asignarColoresPuntosSeleccionados();
+   cuchara->asignarColoresPuntosSeleccionados();
 }

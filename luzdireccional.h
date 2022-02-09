@@ -22,7 +22,6 @@ class LuzDireccional : public Luz
 {
 protected:
    float alfa, beta;
-   Tupla4f origen;   //para variar el angulo
 
 public:
    //inicializar la fuente de luz

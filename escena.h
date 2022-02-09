@@ -89,7 +89,7 @@ private:
     raton estadoRaton = QUIETA;
 
     int xant = 0, yant = 0;
-    visualizacion visualizacionMenu = SOLIDO;
+    visualizacion visualizacionMenu = LUZ;
     bool modoDibujo;                            // Inmediato o diferido
     bool ajedrez, solido, puntos, alambre, luz; //modo de visualización
     bool tapas = true;

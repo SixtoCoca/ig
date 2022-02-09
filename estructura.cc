@@ -116,3 +116,18 @@ void Estructura::asignarColoresSeleccion(Tupla3f c)
    poste->asignarColoresSeleccion(c);
    posteDiagonal->asignarColoresSeleccion(c);
 }
+void Estructura::asignarColoresPuntosSeleccionables()
+{
+   base1->asignarColoresPuntosSeleccionables();
+   base2->asignarColoresPuntosSeleccionables();
+   poste->asignarColoresPuntosSeleccionables();
+   posteDiagonal->asignarColoresPuntosSeleccionables();
+}
+
+void Estructura::asignarColoresPuntosSeleccionados()
+{
+   base1->asignarColoresPuntosSeleccionados();
+   base2->asignarColoresPuntosSeleccionados();
+   poste->asignarColoresPuntosSeleccionados();
+   posteDiagonal->asignarColoresPuntosSeleccionados();
+}
