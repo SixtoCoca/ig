@@ -38,6 +38,8 @@ ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, b
    crearMalla(perfil, num_instancias, tapa_sup, tapa_inf);
    asignarColores();
    tamSinTapas = tam - (3 * numInstancias);
+   tamConTapas = tam;
+
    calcular_normales();
 }
 
@@ -279,7 +281,7 @@ Tupla3f ObjRevolucion::tieneVerticeInferior(std::vector<Tupla3f> p)
    {
    case EJEX:
       // if (p.front()[1] == 0 && p.front()[2] == 0)
-      if (sqrt(pow(p.back()[0] - p.back()[0], 2) + pow(p.back()[1] - 0, 2) + pow(p.back()[2] - 0, 2)) == 0.0)
+      if (sqrt(pow(p.front()[0] - p.front()[0], 2) + pow(p.front()[1] - 0, 2) + pow(p.front()[2] - 0, 2)) == 0.0)
       {
          return p.front();
       }
@@ -290,7 +292,7 @@ Tupla3f ObjRevolucion::tieneVerticeInferior(std::vector<Tupla3f> p)
       break;
    case EJEY:
       // if (p.front()[0] == 0 && p.front()[2] == 0)
-      if (sqrt(pow(p.back()[0] - 0, 2) + pow(p.back()[1] - p.back()[1], 2) + pow(p.back()[2] - 0, 2)) == 0.0)
+      if (sqrt(pow(p.front()[0] - 0, 2) + pow(p.front()[1] - p.front()[1], 2) + pow(p.front()[2] - 0, 2)) == 0.0)
       {
          return p.front();
       }
@@ -301,7 +303,7 @@ Tupla3f ObjRevolucion::tieneVerticeInferior(std::vector<Tupla3f> p)
       break;
    case EJEZ:
       // if (p.front()[0] == 0 && p.front()[1] == 0)
-      if (sqrt(pow(p.back()[0] - 0, 2) + pow(p.back()[1] - 0, 2) + pow(p.back()[2] - p.back()[2], 2)) == 0.0)
+      if (sqrt(pow(p.front()[0] - 0, 2) + pow(p.front()[1] - 0, 2) + pow(p.front()[2] - p.front()[2], 2)) == 0.0)
       {
          return p.front();
       }
